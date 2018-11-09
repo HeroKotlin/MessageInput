@@ -61,9 +61,9 @@ class MessageInput : LinearLayout {
 
     }
 
-    var callback = object: Callback { }
+    var callback = object: MessageInputCallback { }
 
-    private lateinit var configuration: Configuration
+    private lateinit var configuration: MessageInputConfiguration
 
     private var viewMode = VIEW_MODE_KEYBOARD
 
@@ -300,7 +300,7 @@ class MessageInput : LinearLayout {
 
     }
 
-    fun init(configuration: Configuration) {
+    fun init(configuration: MessageInputConfiguration) {
 
         this.configuration = configuration
 
@@ -339,7 +339,7 @@ class MessageInput : LinearLayout {
                 .theme(R.style.Matisse_Zhihu)
                 .countable(true)
                 .maxSelectable(9)
-                .gridExpectedSize(resources.getDimensionPixelSize(R.dimen.message_input_image_grid_expected_size))
+                .spanCount(4)
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 .thumbnailScale(0.85f)
                 .originalEnable(true)

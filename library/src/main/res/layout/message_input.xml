@@ -30,7 +30,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
             android:maxLines="5"
-            android:lineSpacingMultiplier="1.2"
+            android:lineSpacingExtra="1dp"
             android:inputType="textMultiLine"
             android:imeOptions="actionSend"
             android:textSize="@dimen/message_input_textarea_text_size"
@@ -46,28 +46,34 @@
             android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
             android:background="@drawable/message_input_emotion_button"/>
 
-        <Button
-            android:id="@+id/moreButton"
-            android:layout_width="@dimen/message_input_circle_button_size"
-            android:layout_height="@dimen/message_input_circle_button_size"
+        <FrameLayout
+            android:layout_width="@dimen/message_input_send_button_width"
+            android:layout_height="@dimen/message_input_send_button_height"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
-            android:background="@drawable/message_input_more_button"/>
+            android:layout_marginLeft="@dimen/message_input_bar_item_spacing">
 
-        <Button
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/message_input_circle_button_size"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
-            android:visibility="gone"
-            android:text="@string/message_input_send"
-            android:textSize="@dimen/message_input_send_button_text_size"
-            android:textColor="@color/message_input_send_button_text_color"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:background="@drawable/message_input_send_button"
-            style="?android:attr/borderlessButtonStyle"/>
+            <Button
+                android:id="@+id/moreButton"
+                android:layout_width="@dimen/message_input_circle_button_size"
+                android:layout_height="@dimen/message_input_circle_button_size"
+                android:layout_gravity="center"
+                android:background="@drawable/message_input_more_button"/>
+
+            <Button
+                android:id="@+id/sendButton"
+                android:layout_width="@dimen/message_input_send_button_width"
+                android:layout_height="@dimen/message_input_send_button_height"
+                android:visibility="gone"
+                android:text="@string/message_input_send"
+                android:textSize="@dimen/message_input_send_button_text_size"
+                android:textColor="@color/message_input_send_button_text_color"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:background="@drawable/message_input_send_button"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </FrameLayout>
+
 
     </LinearLayout>
 

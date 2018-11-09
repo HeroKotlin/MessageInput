@@ -9,16 +9,15 @@
     <color name="message_input_border_color_focus">#4BC023</color>
 
     <color name="message_input_send_button_text_color">#fff</color>
-    <color name="message_input_send_button_bg_color">#258dff</color>
-    <color name="message_input_send_button_bg_color_pressed">#007AFF</color>
-    <color name="message_input_send_button_border_color">#258dff</color>
-    <color name="message_input_send_button_border_color_pressed">#007AFF</color>
+    <color name="message_input_send_button_bg_color_normal">#FF8604</color>
+    <color name="message_input_send_button_bg_color_pressed">#F2760B</color>
+    <color name="message_input_send_button_border_color">#EB7A00</color>
 
     <color name="message_input_content_panel_bg_color">#ececec</color>
 
     <color name="message_input_feature_button_title_text_color">#999</color>
 
-    <color name="message_input_feature_button_bg_color">#FBFBFC</color>
+    <color name="message_input_feature_button_bg_color_normal">#FBFBFC</color>
     <color name="message_input_feature_button_bg_color_pressed">#ccc</color>
     <color name="message_input_feature_button_border_color">#bbb</color>
 

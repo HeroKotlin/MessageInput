@@ -3,7 +3,7 @@ package com.github.herokotlin.messageinput
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.messageinput.model.Image
 
-interface Callback {
+interface MessageInputCallback {
 
     fun onAudioRecordSuccess(file: String, duration: Int) {
 

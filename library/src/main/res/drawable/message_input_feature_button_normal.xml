@@ -14,6 +14,6 @@
         android:top="@dimen/message_input_feature_button_vertical_padding"
         android:bottom="@dimen/message_input_feature_button_vertical_padding"/>
 
-    <solid android:color="@color/message_input_feature_button_bg_color"/>
+    <solid android:color="@color/message_input_feature_button_bg_color_normal"/>
 
 </shape>

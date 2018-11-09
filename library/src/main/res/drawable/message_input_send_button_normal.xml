@@ -8,10 +8,6 @@
         android:width="1px"
         android:color="@color/message_input_send_button_border_color"/>
 
-    <padding
-        android:left="@dimen/message_input_send_button_horizotal_gap"
-        android:right="@dimen/message_input_send_button_horizotal_gap"/>
-
-    <solid android:color="@color/message_input_send_button_bg_color"/>
+    <solid android:color="@color/message_input_send_button_bg_color_normal"/>
 
 </shape>
