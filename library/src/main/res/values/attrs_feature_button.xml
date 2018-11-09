@@ -1,0 +1,6 @@
+<resources>
+    <declare-styleable name="FeatureButton">
+        <attr name="feature_button_icon" format="reference"/>
+        <attr name="feature_button_title" format="string|reference"/>
+    </declare-styleable>
+</resources>

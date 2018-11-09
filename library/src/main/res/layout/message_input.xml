@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/inputBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/message_input_bar"
+        android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <Button
+            android:id="@+id/voiceButton"
+            android:layout_width="@dimen/message_input_circle_button_size"
+            android:layout_height="@dimen/message_input_circle_button_size"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/message_input_voice_button"/>
+
+        <com.github.herokotlin.emotioninput.view.EmotionTextarea
+            android:id="@+id/textarea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
+            android:maxLines="5"
+            android:lineSpacingMultiplier="1.2"
+            android:inputType="textMultiLine"
+            android:imeOptions="actionSend"
+            android:textSize="@dimen/message_input_textarea_text_size"
+            android:textColor="@color/message_input_textarea_text_color"
+            android:background="@drawable/message_input_textarea"
+            android:textCursorDrawable="@drawable/message_input_textarea_cursor"/>
+
+        <Button
+            android:id="@+id/emotionButton"
+            android:layout_width="@dimen/message_input_circle_button_size"
+            android:layout_height="@dimen/message_input_circle_button_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
+            android:background="@drawable/message_input_emotion_button"/>
+
+        <Button
+            android:id="@+id/moreButton"
+            android:layout_width="@dimen/message_input_circle_button_size"
+            android:layout_height="@dimen/message_input_circle_button_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
+            android:background="@drawable/message_input_more_button"/>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/message_input_circle_button_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
+            android:visibility="gone"
+            android:text="@string/message_input_send"
+            android:textSize="@dimen/message_input_send_button_text_size"
+            android:textColor="@color/message_input_send_button_text_color"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:background="@drawable/message_input_send_button"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+    <com.github.herokotlin.messageinput.view.KeyboardLayout
+        android:id="@+id/contentPanel"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:visibility="gone"
+        android:background="@color/message_input_content_panel_bg_color">
+
+        <LinearLayout
+            android:id="@+id/morePanel"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/message_input_feature_panel_padding_horizontal"
+            android:paddingRight="@dimen/message_input_feature_panel_padding_horizontal"
+            android:paddingTop="@dimen/message_input_feature_panel_padding_vertical"
+            android:paddingBottom="@dimen/message_input_feature_panel_padding_vertical">
+
+            <com.github.herokotlin.messageinput.view.FeatureButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:feature_button_icon="@drawable/message_input_image"
+                app:feature_button_title="@string/message_input_image"/>
+
+            <com.github.herokotlin.messageinput.view.FeatureButton
+                android:id="@+id/cameraButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/message_input_feature_button_spacing"
+                app:feature_button_icon="@drawable/message_input_camera"
+                app:feature_button_title="@string/message_input_camera"/>
+
+        </LinearLayout>
+
+        <com.github.herokotlin.voiceinput.VoiceInput
+            android:id="@+id/voicePanel"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.github.herokotlin.emotioninput.view.EmotionPager
+            android:id="@+id/emotionPanel"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </com.github.herokotlin.messageinput.view.KeyboardLayout>
+
+</LinearLayout>
