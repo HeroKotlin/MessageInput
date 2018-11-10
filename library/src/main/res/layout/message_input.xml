@@ -10,6 +10,10 @@
         android:id="@+id/inputBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/message_input_bar_padding_horizontal"
+        android:paddingRight="@dimen/message_input_bar_padding_horizontal"
+        android:paddingTop="@dimen/message_input_bar_padding_vertical"
+        android:paddingBottom="@dimen/message_input_bar_padding_vertical"
         android:background="@drawable/message_input_bar"
         android:orientation="horizontal"
         android:focusable="true"
@@ -19,7 +23,8 @@
             android:id="@+id/voiceButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/message_input_circle_button_margin_bottom"
 
             app:circle_view_center_color="@color/message_input_circle_button_bg_color_normal"
             app:circle_view_center_radius="@dimen/message_input_circle_button_radius"
@@ -49,8 +54,9 @@
             android:id="@+id/emotionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="bottom"
             android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
+            android:layout_marginBottom="@dimen/message_input_circle_button_margin_bottom"
 
             app:circle_view_center_color="@color/message_input_circle_button_bg_color_normal"
             app:circle_view_center_radius="@dimen/message_input_circle_button_radius"
@@ -63,8 +69,9 @@
         <FrameLayout
             android:layout_width="@dimen/message_input_send_button_width"
             android:layout_height="@dimen/message_input_send_button_height"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/message_input_bar_item_spacing">
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
+            android:layout_marginBottom="@dimen/message_input_send_button_margin_bottom">
 
             <com.github.herokotlin.circleview.CircleView
                 android:id="@+id/moreButton"

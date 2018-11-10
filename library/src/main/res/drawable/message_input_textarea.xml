@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="rectangle">
 
-    <item android:drawable="@drawable/message_input_textarea_focus" android:state_focused="true"/>
-    <item android:drawable="@drawable/message_input_textarea_normal"/>
+    <corners android:radius="@dimen/message_input_textarea_border_radius"/>
 
-</selector>
+    <stroke
+        android:width="@dimen/message_input_textarea_border_width"
+        android:color="@color/message_input_textarea_border_color"/>
+
+    <padding
+        android:left="@dimen/message_input_textarea_padding_horizontal"
+        android:right="@dimen/message_input_textarea_padding_horizontal"
+        android:top="@dimen/message_input_textarea_padding_vertical"
+        android:bottom="@dimen/message_input_textarea_padding_vertical"/>
+
+    <solid android:color="@color/message_input_textarea_bg_color"/>
+</shape>

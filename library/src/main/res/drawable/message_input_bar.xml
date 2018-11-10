@@ -7,14 +7,8 @@
         </shape>
     </item>
 
-    <item android:top="1px" android:bottom="1px">
+    <item android:top="@dimen/message_input_bar_border_width" android:bottom="@dimen/message_input_bar_border_width">
         <shape>
-            <padding
-                android:left="@dimen/message_input_bar_padding_horizontal"
-                android:right="@dimen/message_input_bar_padding_horizontal"
-                android:top="@dimen/message_input_bar_padding_vertical"
-                android:bottom="@dimen/message_input_bar_padding_vertical"/>
-
             <solid android:color="@color/message_input_bar_bg_color"/>
         </shape>
     </item>
