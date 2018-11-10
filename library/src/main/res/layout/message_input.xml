@@ -15,12 +15,19 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <Button
+        <com.github.herokotlin.circleview.CircleView
             android:id="@+id/voiceButton"
-            android:layout_width="@dimen/message_input_circle_button_size"
-            android:layout_height="@dimen/message_input_circle_button_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/message_input_voice_button"/>
+
+            app:circle_view_center_color="@color/message_input_circle_button_bg_color_normal"
+            app:circle_view_center_radius="@dimen/message_input_circle_button_radius"
+            app:circle_view_center_image="@drawable/message_input_voice"
+            app:circle_view_ring_width="@dimen/message_input_circle_button_border_width"
+            app:circle_view_ring_color="@color/message_input_circle_button_border_color"
+            app:circle_view_track_width="0dp"
+            app:circle_view_track_value="0"/>
 
         <com.github.herokotlin.emotioninput.view.EmotionTextarea
             android:id="@+id/textarea"
@@ -38,13 +45,20 @@
             android:background="@drawable/message_input_textarea"
             android:textCursorDrawable="@drawable/message_input_textarea_cursor"/>
 
-        <Button
+        <com.github.herokotlin.circleview.CircleView
             android:id="@+id/emotionButton"
-            android:layout_width="@dimen/message_input_circle_button_size"
-            android:layout_height="@dimen/message_input_circle_button_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/message_input_bar_item_spacing"
-            android:background="@drawable/message_input_emotion_button"/>
+
+            app:circle_view_center_color="@color/message_input_circle_button_bg_color_normal"
+            app:circle_view_center_radius="@dimen/message_input_circle_button_radius"
+            app:circle_view_center_image="@drawable/message_input_emotion"
+            app:circle_view_ring_width="@dimen/message_input_circle_button_border_width"
+            app:circle_view_ring_color="@color/message_input_circle_button_border_color"
+            app:circle_view_track_width="0dp"
+            app:circle_view_track_value="0"/>
 
         <FrameLayout
             android:layout_width="@dimen/message_input_send_button_width"
@@ -52,12 +66,19 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/message_input_bar_item_spacing">
 
-            <Button
+            <com.github.herokotlin.circleview.CircleView
                 android:id="@+id/moreButton"
-                android:layout_width="@dimen/message_input_circle_button_size"
-                android:layout_height="@dimen/message_input_circle_button_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@drawable/message_input_more_button"/>
+
+                app:circle_view_center_color="@color/message_input_circle_button_bg_color_normal"
+                app:circle_view_center_radius="@dimen/message_input_circle_button_radius"
+                app:circle_view_center_image="@drawable/message_input_more"
+                app:circle_view_ring_width="@dimen/message_input_circle_button_border_width"
+                app:circle_view_ring_color="@color/message_input_circle_button_border_color"
+                app:circle_view_track_width="0dp"
+                app:circle_view_track_value="0"/>
 
             <Button
                 android:id="@+id/sendButton"

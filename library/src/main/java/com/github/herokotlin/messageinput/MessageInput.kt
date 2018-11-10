@@ -16,8 +16,10 @@ import android.widget.Toast
 import com.zhihu.matisse.engine.impl.GlideEngine
 import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
+import com.github.herokotlin.circleview.CircleViewCallback
 import com.github.herokotlin.emotioninput.EmotionInputCallback
 import com.github.herokotlin.emotioninput.filter.EmotionFilter
 import com.github.herokotlin.emotioninput.model.Emotion
@@ -201,33 +203,99 @@ class MessageInput : LinearLayout {
             }
         }
 
-        voiceButton.setOnClickListener {
-            if (viewMode == VIEW_MODE_VOICE) {
-                viewMode = VIEW_MODE_KEYBOARD
-                showKeyboard()
+        voiceButton.callback = object: CircleViewCallback {
+
+            override fun onTouchDown() {
+                voiceButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_pressed)
+                voiceButton.invalidate()
             }
-            else {
-                viewMode = VIEW_MODE_VOICE
+
+            override fun onTouchUp(inside: Boolean, isLongPress: Boolean) {
+                voiceButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
+                voiceButton.invalidate()
+                if (inside) {
+                    if (viewMode == VIEW_MODE_VOICE) {
+                        viewMode = VIEW_MODE_KEYBOARD
+                        showKeyboard()
+                    }
+                    else {
+                        viewMode = VIEW_MODE_VOICE
+                    }
+                }
+            }
+
+            override fun onTouchEnter() {
+                voiceButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_pressed)
+                voiceButton.invalidate()
+            }
+
+            override fun onTouchLeave() {
+                voiceButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
+                voiceButton.invalidate()
             }
         }
 
-        emotionButton.setOnClickListener {
-            if (viewMode == VIEW_MODE_EMOTION) {
-                viewMode = VIEW_MODE_KEYBOARD
-                showKeyboard()
+        emotionButton.callback = object: CircleViewCallback {
+
+            override fun onTouchDown() {
+                emotionButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_pressed)
+                emotionButton.invalidate()
             }
-            else {
-                viewMode = VIEW_MODE_EMOTION
+
+            override fun onTouchUp(inside: Boolean, isLongPress: Boolean) {
+                emotionButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
+                emotionButton.invalidate()
+                if (inside) {
+                    if (viewMode == VIEW_MODE_EMOTION) {
+                        viewMode = VIEW_MODE_KEYBOARD
+                        showKeyboard()
+                    }
+                    else {
+                        viewMode = VIEW_MODE_EMOTION
+                    }
+                }
+            }
+
+            override fun onTouchEnter() {
+                emotionButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_pressed)
+                emotionButton.invalidate()
+            }
+
+            override fun onTouchLeave() {
+                emotionButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
+                emotionButton.invalidate()
             }
         }
 
-        moreButton.setOnClickListener {
-            if (viewMode == VIEW_MODE_MORE) {
-                viewMode = VIEW_MODE_KEYBOARD
-                showKeyboard()
+        moreButton.callback = object: CircleViewCallback {
+
+            override fun onTouchDown() {
+                moreButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_pressed)
+                moreButton.invalidate()
             }
-            else {
-                viewMode = VIEW_MODE_MORE
+
+            override fun onTouchUp(inside: Boolean, isLongPress: Boolean) {
+                moreButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
+                moreButton.invalidate()
+                if (inside) {
+                    if (viewMode == VIEW_MODE_MORE) {
+                        viewMode = VIEW_MODE_KEYBOARD
+                        showKeyboard()
+                    }
+                    else {
+                        viewMode = VIEW_MODE_MORE
+                    }
+                }
+            }
+
+            override fun onTouchEnter() {
+                moreButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_pressed)
+                moreButton.invalidate()
+            }
+
+            override fun onTouchLeave() {
+                moreButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
+                moreButton.invalidate()
             }
         }
 

@@ -10,7 +10,8 @@
 
     <dimen name="message_input_bar_item_spacing">8dp</dimen>
 
-    <dimen name="message_input_circle_button_size">30dp</dimen>
+    <dimen name="message_input_circle_button_radius">15dp</dimen>
+    <dimen name="message_input_circle_button_border_width">1px</dimen>
 
     <dimen name="message_input_send_button_width">44dp</dimen>
     <dimen name="message_input_send_button_height">34dp</dimen>

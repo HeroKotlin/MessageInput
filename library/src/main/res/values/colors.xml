@@ -8,6 +8,10 @@
     <color name="message_input_border_color">#AAA</color>
     <color name="message_input_border_color_focus">#4BC023</color>
 
+    <color name="message_input_circle_button_border_color">#999</color>
+    <color name="message_input_circle_button_bg_color_normal">#FFF</color>
+    <color name="message_input_circle_button_bg_color_pressed">#D4D4D4</color>
+
     <color name="message_input_send_button_text_color">#fff</color>
     <color name="message_input_send_button_bg_color_normal">#FF8604</color>
     <color name="message_input_send_button_bg_color_pressed">#F2760B</color>
