@@ -354,7 +354,7 @@ class MessageInput : LinearLayout {
 
         Matisse.from(context as Activity)
                 .choose(MimeType.ofImage())
-                .theme(R.style.Matisse_Zhihu)
+                .theme(R.style.Matisse_Dracula)
                 .countable(true)
                 .maxSelectable(9)
                 .spanCount(4)
