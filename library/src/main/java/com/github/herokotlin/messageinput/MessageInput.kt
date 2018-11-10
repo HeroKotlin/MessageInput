@@ -16,22 +16,20 @@ import android.widget.Toast
 import com.zhihu.matisse.engine.impl.GlideEngine
 import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import com.github.herokotlin.emotioninput.EmotionInputCallback
+import com.github.herokotlin.emotioninput.filter.EmotionFilter
 import com.github.herokotlin.emotioninput.model.Emotion
+import com.github.herokotlin.emotioninput.model.EmotionSet
 import com.github.herokotlin.messageinput.model.Image
 import com.github.herokotlin.voiceinput.VoiceInputCallback
-import com.github.herokotlin.voiceinput.VoiceManager
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 
 class MessageInput : LinearLayout {
 
     companion object {
-
-        const val LOG_TAG = "MessageInput"
 
         const val CAMERA_PERMISSION_REQUEST_CODE = 1321
 
@@ -65,7 +63,7 @@ class MessageInput : LinearLayout {
 
     private lateinit var configuration: MessageInputConfiguration
 
-    private var viewMode = VIEW_MODE_KEYBOARD
+    var viewMode = VIEW_MODE_KEYBOARD
 
         set(value) {
 
@@ -95,7 +93,7 @@ class MessageInput : LinearLayout {
             // 切换到语音、表情、更多
             if (value != VIEW_MODE_KEYBOARD) {
 
-                showContent()
+                showContentPanel()
 
                 if (field == VIEW_MODE_KEYBOARD && !contentPanel.isKeyboardVisible) {
                     callback.onLift()
@@ -106,7 +104,7 @@ class MessageInput : LinearLayout {
                 adjustMode = ADJUST_MODE_NOTHING
 
                 // 基于 nothing 模式，软键盘落下去不会影响布局
-                blurInput()
+                hideKeyboard()
 
             }
 
@@ -131,7 +129,7 @@ class MessageInput : LinearLayout {
             field = value
         }
 
-    private var content = ""
+    private var text = ""
 
         set(value) {
 
@@ -180,14 +178,14 @@ class MessageInput : LinearLayout {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                content = textarea.text.toString()
+                text = textarea.text.toString()
             }
         })
 
         emotionPanel.callback = object: EmotionInputCallback {
             override fun onEmotionClick(emotion: Emotion) {
                 if (emotion.inline) {
-                    textarea.text.insert(textarea.selectionStart, emotion.code)
+                    textarea.insertEmotion(emotion)
                 }
                 else {
                     callback.onEmotionSend(emotion)
@@ -195,47 +193,46 @@ class MessageInput : LinearLayout {
             }
 
             override fun onDeleteClick() {
-                val event = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL)
-                textarea.onKeyDown(KeyEvent.KEYCODE_DEL, event)
+                textarea.deleteBackward()
             }
 
             override fun onSendClick() {
-                onSendClick()
+                sendText()
             }
         }
 
         voiceButton.setOnClickListener {
-            viewMode = when (viewMode) {
-                VIEW_MODE_VOICE -> { VIEW_MODE_KEYBOARD }
-                else -> { VIEW_MODE_VOICE }
+            if (viewMode == VIEW_MODE_VOICE) {
+                viewMode = VIEW_MODE_KEYBOARD
+                showKeyboard()
             }
-            if (viewMode == VIEW_MODE_KEYBOARD) {
-                focusInput()
+            else {
+                viewMode = VIEW_MODE_VOICE
             }
         }
 
         emotionButton.setOnClickListener {
-            viewMode = when (viewMode) {
-                VIEW_MODE_EMOTION -> { VIEW_MODE_KEYBOARD }
-                else -> { VIEW_MODE_EMOTION }
+            if (viewMode == VIEW_MODE_EMOTION) {
+                viewMode = VIEW_MODE_KEYBOARD
+                showKeyboard()
             }
-            if (viewMode == VIEW_MODE_KEYBOARD) {
-                focusInput()
+            else {
+                viewMode = VIEW_MODE_EMOTION
             }
         }
 
         moreButton.setOnClickListener {
-            viewMode = when (viewMode) {
-                VIEW_MODE_MORE -> { VIEW_MODE_KEYBOARD }
-                else -> { VIEW_MODE_MORE }
+            if (viewMode == VIEW_MODE_MORE) {
+                viewMode = VIEW_MODE_KEYBOARD
+                showKeyboard()
             }
-            if (viewMode == VIEW_MODE_KEYBOARD) {
-                focusInput()
+            else {
+                viewMode = VIEW_MODE_MORE
             }
         }
 
         sendButton.setOnClickListener {
-            onSendClick()
+            sendText()
         }
 
         imageButton.onClick = {
@@ -249,7 +246,7 @@ class MessageInput : LinearLayout {
         voicePanel.callback = object: VoiceInputCallback {
 
             override fun onFinishRecord(filePath: String, duration: Int) {
-                callback.onAudioRecordSuccess(filePath, duration)
+                callback.onVoiceSend(filePath, duration)
             }
 
         }
@@ -272,7 +269,7 @@ class MessageInput : LinearLayout {
                 postDelayed(
                     {
                         if (adjustMode == ADJUST_MODE_NOTHING && viewMode == VIEW_MODE_KEYBOARD) {
-                            hideContent()
+                            hideContentPanel()
                             adjustMode = ADJUST_MODE_RESIZE
                         }
                         if (isLift) {
@@ -287,10 +284,10 @@ class MessageInput : LinearLayout {
 
         contentPanel.onVisibleChange = {
             if (!it) {
-                blurInput()
+                hideKeyboard()
                 if (viewMode == VIEW_MODE_KEYBOARD) {
                     adjustMode = ADJUST_MODE_RESIZE
-                    hideContent()
+                    hideContentPanel()
                 }
             }
         }
@@ -304,17 +301,38 @@ class MessageInput : LinearLayout {
 
         this.configuration = configuration
 
-        for (filter in configuration.getEmotionFilters()) {
-            textarea.addFilter(filter)
-        }
-
-        emotionPanel.emotionSetList = configuration.getEmotionSets()
-
 //        voiceInput.savePath = configuration.getVoiceRecordSavePath()
 
     }
 
-    private fun onSendClick() {
+    fun setEmotionSetList(emotionSetList: List<EmotionSet>) {
+        emotionPanel.emotionSetList = emotionSetList
+    }
+
+    fun addEmotionFilter(emotionFilter: EmotionFilter) {
+        textarea.addFilter(emotionFilter)
+    }
+
+    fun removeEmotionFilter(emotionFilter: EmotionFilter) {
+        textarea.removeFilter(emotionFilter)
+    }
+
+    fun minimize() {
+        if (viewMode == VIEW_MODE_KEYBOARD) {
+            if (contentPanel.isKeyboardVisible) {
+                hideKeyboard()
+                hideContentPanel()
+                callback.onFall()
+            }
+        }
+        else {
+            viewMode = VIEW_MODE_KEYBOARD
+            hideContentPanel()
+            callback.onFall()
+        }
+    }
+
+    private fun sendText() {
         val text = textarea.text
         if (text.isNotBlank()) {
             callback.onTextSend(text.toString())
@@ -345,6 +363,7 @@ class MessageInput : LinearLayout {
                 .originalEnable(true)
                 .imageEngine(GlideEngine())
                 .forResult(IMAGE_ACTIVITY_REQUEST_CODE)
+
     }
 
     private fun requestCameraPermissions() {
@@ -410,20 +429,24 @@ class MessageInput : LinearLayout {
                 when (resultCode) {
                     CameraActivity.RESULT_CODE_VIDEO -> {
                         val path = data.getStringExtra("firstFrame")
-                        callback.onVideoRecordSuccess(
+                        val image = readImage(path)
+                        callback.onVideoSend(
                             data.getStringExtra("video"),
                             data.getIntExtra("duration", 0),
-                            readImage(path)
+                            image.path,
+                            image.width,
+                            image.height
                         )
                     }
                     CameraActivity.RESULT_CODE_PHOTO -> {
                         val path = data.getStringExtra("photo")
-                        callback.onPhotoCaptureSuccess(readImage(path))
+                        val image = readImage(path)
+                        callback.onPhotoSend(image.path, image.width, image.height)
                     }
                 }
             }
             else if (requestCode == IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                callback.onMediaSelectSuccess(
+                callback.onImageSend(
                     Matisse.obtainPathResult(data).map { readImage(it) }
                 )
             }
@@ -456,51 +479,21 @@ class MessageInput : LinearLayout {
         }
     }
 
-    fun requestPermission(permission: String): Boolean {
-
-        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                arrayOf(permission),
-                VoiceManager.PERMISSION_REQUEST_CODE
-            )
-            return false
-        }
-
-        return true
-
-    }
-
-    fun minimize() {
-        if (viewMode == VIEW_MODE_KEYBOARD) {
-            if (contentPanel.isKeyboardVisible) {
-                blurInput()
-                hideContent()
-                callback.onFall()
-            }
-        }
-        else {
-            viewMode = VIEW_MODE_KEYBOARD
-            hideContent()
-            callback.onFall()
-        }
-    }
-
-    private fun showContent() {
+    private fun showContentPanel() {
         contentPanel.visibility = View.VISIBLE
     }
 
-    private fun hideContent() {
+    private fun hideContentPanel() {
         contentPanel.visibility = View.GONE
     }
 
-    private fun focusInput() {
+    private fun showKeyboard() {
         textarea.requestFocus()
         val inputManager = textarea.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.showSoftInput(textarea, 0)
     }
 
-    private fun blurInput() {
+    private fun hideKeyboard() {
         textarea.clearFocus()
         val inputManager = textarea.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputManager.hideSoftInputFromWindow(textarea.windowToken, 0)

@@ -1,2 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.github.herokotlin.messageinput"/>
+          package="com.github.herokotlin.messageinput">
+
+    <application>
+        <activity android:name=".CameraActivity">
+        </activity>
+    </application>
+
+</manifest>

@@ -5,19 +5,19 @@ import com.github.herokotlin.messageinput.model.Image
 
 interface MessageInputCallback {
 
-    fun onAudioRecordSuccess(file: String, duration: Int) {
+    fun onVoiceSend(audioPath: String, audioDuration: Int) {
 
     }
 
-    fun onVideoRecordSuccess(file: String, duration: Int, firstFrame: Image) {
+    fun onVideoSend(videoPath: String, videoDuration: Int, photoPath: String, photoWidth: Int, photoHeight: Int) {
 
     }
 
-    fun onPhotoCaptureSuccess(photo: Image) {
+    fun onPhotoSend(photoPath: String, photoWidth: Int, photoHeight: Int) {
 
     }
 
-    fun onMediaSelectSuccess(files: List<Image>) {
+    fun onImageSend(images: List<Image>) {
 
     }
 
