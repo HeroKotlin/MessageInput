@@ -62,7 +62,7 @@ class CameraActivity : AppCompatActivity() {
             override fun recordSuccess(url: String?, firstFrame: Bitmap?) {
                 val intent = Intent()
                 intent.putExtra("video", url)
-                intent.putExtra("firstFrame", FileUtil.saveBitmap("photo", firstFrame))
+                intent.putExtra("firstFrame", File5Util.saveBitmap("photo", firstFrame))
 
                 val player = MediaPlayer()
                 try {
