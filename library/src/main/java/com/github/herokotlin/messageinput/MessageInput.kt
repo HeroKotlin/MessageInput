@@ -19,12 +19,15 @@ import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import com.github.herokotlin.circleview.CircleViewCallback
 import com.github.herokotlin.emotioninput.EmotionInputCallback
 import com.github.herokotlin.emotioninput.filter.EmotionFilter
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.emotioninput.model.EmotionSet
+import com.github.herokotlin.messageinput.model.AdjustMode
 import com.github.herokotlin.messageinput.model.Image
+import com.github.herokotlin.messageinput.model.ViewMode
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -41,31 +44,13 @@ class MessageInput : LinearLayout {
 
         const val IMAGE_ACTIVITY_REQUEST_CODE = 1324
 
-        // 打字输入模式
-        const val VIEW_MODE_KEYBOARD = 0
-
-        // 语音输入模式
-        const val VIEW_MODE_VOICE = 1
-
-        // 表情输入模式
-        const val VIEW_MODE_EMOTION = 2
-
-        // 更多输入模式
-        const val VIEW_MODE_MORE = 3
-
-        // resize
-        const val ADJUST_MODE_RESIZE = 1
-
-        // nothing
-        const val ADJUST_MODE_NOTHING = 2
-
     }
 
     var callback = object: MessageInputCallback { }
 
     private lateinit var configuration: MessageInputConfiguration
 
-    var viewMode = VIEW_MODE_KEYBOARD
+    var viewMode = ViewMode.KEYBOARD
 
         set(value) {
 
@@ -74,18 +59,18 @@ class MessageInput : LinearLayout {
             }
 
             when (value) {
-                VIEW_MODE_VOICE -> {
+                ViewMode.VOICE -> {
                     voicePanel.requestPermissions()
                     voicePanel.visibility = View.VISIBLE
                     emotionPanel.visibility = View.GONE
                     morePanel.visibility = View.GONE
                 }
-                VIEW_MODE_EMOTION -> {
+                ViewMode.EMOTION -> {
                     voicePanel.visibility = View.GONE
                     emotionPanel.visibility = View.VISIBLE
                     morePanel.visibility = View.GONE
                 }
-                VIEW_MODE_MORE -> {
+                ViewMode.MORE -> {
                     voicePanel.visibility = View.GONE
                     emotionPanel.visibility = View.GONE
                     morePanel.visibility = View.VISIBLE
@@ -93,17 +78,17 @@ class MessageInput : LinearLayout {
             }
 
             // 切换到语音、表情、更多
-            if (value != VIEW_MODE_KEYBOARD) {
+            if (value != ViewMode.KEYBOARD) {
 
                 showContentPanel()
 
-                if (field == VIEW_MODE_KEYBOARD && !contentPanel.isKeyboardVisible) {
+                if (field == ViewMode.KEYBOARD && !contentPanel.isKeyboardVisible) {
                     callback.onLift()
                 }
 
                 // 只要切到其他 view mode 都要改成 nothing
                 // 否则，当再次聚焦输入框时，高度会有问题
-                adjustMode = ADJUST_MODE_NOTHING
+                adjustMode = AdjustMode.NOTHING
 
                 // 基于 nothing 模式，软键盘落下去不会影响布局
                 hideKeyboard()
@@ -112,9 +97,11 @@ class MessageInput : LinearLayout {
 
             field = value
 
+            Log.d("messageinput", "changeto ${value}")
+
         }
 
-    private var adjustMode = 0
+    private var adjustMode = AdjustMode.DEFAULT
 
         set(value) {
             if (field == value) {
@@ -122,7 +109,7 @@ class MessageInput : LinearLayout {
             }
 
             val mode = when (value) {
-                ADJUST_MODE_NOTHING -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING }
+                AdjustMode.NOTHING -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING }
                 else -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE }
             }
 
@@ -214,12 +201,11 @@ class MessageInput : LinearLayout {
                 voiceButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
                 voiceButton.invalidate()
                 if (inside) {
-                    if (viewMode == VIEW_MODE_VOICE) {
-                        viewMode = VIEW_MODE_KEYBOARD
+                    if (viewMode == ViewMode.VOICE) {
                         showKeyboard()
                     }
                     else {
-                        viewMode = VIEW_MODE_VOICE
+                        viewMode = ViewMode.VOICE
                     }
                 }
             }
@@ -246,12 +232,11 @@ class MessageInput : LinearLayout {
                 emotionButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
                 emotionButton.invalidate()
                 if (inside) {
-                    if (viewMode == VIEW_MODE_EMOTION) {
-                        viewMode = VIEW_MODE_KEYBOARD
+                    if (viewMode == ViewMode.EMOTION) {
                         showKeyboard()
                     }
                     else {
-                        viewMode = VIEW_MODE_EMOTION
+                        viewMode = ViewMode.EMOTION
                     }
                 }
             }
@@ -278,12 +263,11 @@ class MessageInput : LinearLayout {
                 moreButton.centerColor = ContextCompat.getColor(context, R.color.message_input_circle_button_bg_color_normal)
                 moreButton.invalidate()
                 if (inside) {
-                    if (viewMode == VIEW_MODE_MORE) {
-                        viewMode = VIEW_MODE_KEYBOARD
+                    if (viewMode == ViewMode.MORE) {
                         showKeyboard()
                     }
                     else {
-                        viewMode = VIEW_MODE_MORE
+                        viewMode = ViewMode.MORE
                     }
                 }
             }
@@ -324,8 +308,8 @@ class MessageInput : LinearLayout {
 
                 var isLift = false
 
-                if (viewMode != VIEW_MODE_KEYBOARD) {
-                    viewMode = VIEW_MODE_KEYBOARD
+                if (viewMode != ViewMode.KEYBOARD) {
+                    viewMode = ViewMode.KEYBOARD
                 }
                 else {
                     isLift = true
@@ -336,9 +320,10 @@ class MessageInput : LinearLayout {
 
                 postDelayed(
                     {
-                        if (adjustMode == ADJUST_MODE_NOTHING && viewMode == VIEW_MODE_KEYBOARD) {
+                        // 从别的模式切过来的
+                        if (adjustMode == AdjustMode.NOTHING && viewMode == ViewMode.KEYBOARD) {
                             hideContentPanel()
-                            adjustMode = ADJUST_MODE_RESIZE
+                            adjustMode = AdjustMode.RESIZE
                         }
                         if (isLift) {
                             callback.onLift()
@@ -353,15 +338,16 @@ class MessageInput : LinearLayout {
         contentPanel.onVisibleChange = {
             if (!it) {
                 hideKeyboard()
-                if (viewMode == VIEW_MODE_KEYBOARD) {
-                    adjustMode = ADJUST_MODE_RESIZE
+                if (viewMode == ViewMode.KEYBOARD) {
+                    adjustMode = AdjustMode.RESIZE
                     hideContentPanel()
+                    callback.onFall()
                 }
             }
         }
 
         // 初始布局可自动调整大小
-        adjustMode = ADJUST_MODE_RESIZE
+        adjustMode = AdjustMode.RESIZE
 
     }
 
@@ -385,8 +371,8 @@ class MessageInput : LinearLayout {
         textarea.removeFilter(emotionFilter)
     }
 
-    fun minimize() {
-        if (viewMode == VIEW_MODE_KEYBOARD) {
+    fun reset() {
+        if (viewMode == ViewMode.KEYBOARD) {
             if (contentPanel.isKeyboardVisible) {
                 hideKeyboard()
                 hideContentPanel()
@@ -394,7 +380,7 @@ class MessageInput : LinearLayout {
             }
         }
         else {
-            viewMode = VIEW_MODE_KEYBOARD
+            viewMode = ViewMode.KEYBOARD
             hideContentPanel()
             callback.onFall()
         }
