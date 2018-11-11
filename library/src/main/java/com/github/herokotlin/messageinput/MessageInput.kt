@@ -48,8 +48,6 @@ class MessageInput : LinearLayout {
 
     var callback = object: MessageInputCallback { }
 
-    private lateinit var configuration: MessageInputConfiguration
-
     var viewMode = ViewMode.KEYBOARD
 
         set(value) {
@@ -335,8 +333,8 @@ class MessageInput : LinearLayout {
             }
         }
 
-        contentPanel.onVisibleChange = {
-            if (!it) {
+        contentPanel.onVisibleChange = { isVisible ->
+            if (!isVisible) {
                 hideKeyboard()
                 if (viewMode == ViewMode.KEYBOARD) {
                     adjustMode = AdjustMode.RESIZE
@@ -348,14 +346,6 @@ class MessageInput : LinearLayout {
 
         // 初始布局可自动调整大小
         adjustMode = AdjustMode.RESIZE
-
-    }
-
-    fun init(configuration: MessageInputConfiguration) {
-
-        this.configuration = configuration
-
-//        voiceInput.savePath = configuration.getVoiceRecordSavePath()
 
     }
 
@@ -397,8 +387,6 @@ class MessageInput : LinearLayout {
     private fun openCameraActivity() {
 
         val intent = Intent(context, CameraActivity::class.java)
-
-        intent.putExtra("savePath", configuration.getCameraRecordSavePath())
 
         (context as Activity).startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
 

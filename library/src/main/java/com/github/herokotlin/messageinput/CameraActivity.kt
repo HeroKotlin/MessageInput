@@ -43,7 +43,7 @@ class CameraActivity : AppCompatActivity() {
 
         cameraView.setFeatures(JCameraView.BUTTON_STATE_BOTH)
 
-        cameraView.setSaveVideoPath(intent.getStringExtra("savePath"))
+        cameraView.setSaveVideoPath(externalCacheDir.absolutePath)
 
         cameraView.setTip(resources.getString(R.string.message_input_camera_tip))
 
