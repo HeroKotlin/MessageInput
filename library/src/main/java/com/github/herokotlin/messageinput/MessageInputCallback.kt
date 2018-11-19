@@ -9,11 +9,11 @@ interface MessageInputCallback {
 
     }
 
-    fun onVideoSend(videoPath: String, videoDuration: Int, photoPath: String, photoWidth: Int, photoHeight: Int) {
+    fun onVideoSend(videoPath: String, videoDuration: Int, thumbnail: Image) {
 
     }
 
-    fun onPhotoSend(photoPath: String, photoWidth: Int, photoHeight: Int) {
+    fun onPhotoSend(photo: Image) {
 
     }
 

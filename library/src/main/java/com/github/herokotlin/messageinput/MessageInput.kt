@@ -26,9 +26,9 @@ import com.github.herokotlin.emotioninput.EmotionInputCallback
 import com.github.herokotlin.emotioninput.filter.EmotionFilter
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.emotioninput.model.EmotionSet
-import com.github.herokotlin.messageinput.model.AdjustMode
+import com.github.herokotlin.messageinput.enum.AdjustMode
+import com.github.herokotlin.messageinput.enum.ViewMode
 import com.github.herokotlin.messageinput.model.Image
-import com.github.herokotlin.messageinput.model.ViewMode
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -57,23 +57,21 @@ class MessageInput : LinearLayout {
                 return
             }
 
-            when (value) {
-                ViewMode.VOICE -> {
-                    voicePanel.requestPermissions()
-                    voicePanel.visibility = View.VISIBLE
-                    emotionPanel.visibility = View.GONE
-                    morePanel.visibility = View.GONE
-                }
-                ViewMode.EMOTION -> {
-                    voicePanel.visibility = View.GONE
-                    emotionPanel.visibility = View.VISIBLE
-                    morePanel.visibility = View.GONE
-                }
-                ViewMode.MORE -> {
-                    voicePanel.visibility = View.GONE
-                    emotionPanel.visibility = View.GONE
-                    morePanel.visibility = View.VISIBLE
-                }
+            if (value == ViewMode.VOICE) {
+                voicePanel.requestPermissions()
+                voicePanel.visibility = View.VISIBLE
+                emotionPanel.visibility = View.GONE
+                morePanel.visibility = View.GONE
+            }
+            else if (value == ViewMode.EMOTION) {
+                voicePanel.visibility = View.GONE
+                emotionPanel.visibility = View.VISIBLE
+                morePanel.visibility = View.GONE
+            }
+            else if (value == ViewMode.MORE) {
+                voicePanel.visibility = View.GONE
+                emotionPanel.visibility = View.GONE
+                morePanel.visibility = View.VISIBLE
             }
 
             // 切换到语音、表情、更多
@@ -433,19 +431,15 @@ class MessageInput : LinearLayout {
                 when (resultCode) {
                     CameraActivity.RESULT_CODE_VIDEO -> {
                         val path = data.getStringExtra("firstFrame")
-                        val image = readImage(path)
                         callback.onVideoSend(
                             data.getStringExtra("video"),
                             data.getIntExtra("duration", 0),
-                            image.path,
-                            image.width,
-                            image.height
+                            readImage(path)
                         )
                     }
                     CameraActivity.RESULT_CODE_PHOTO -> {
                         val path = data.getStringExtra("photo")
-                        val image = readImage(path)
-                        callback.onPhotoSend(image.path, image.width, image.height)
+                        callback.onPhotoSend(readImage(path))
                     }
                 }
             }

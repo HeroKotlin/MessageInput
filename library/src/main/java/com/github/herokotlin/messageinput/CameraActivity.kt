@@ -15,7 +15,6 @@ import com.cjt2325.cameralibrary.util.FileUtil
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.IOException
 
-
 class CameraActivity : AppCompatActivity() {
 
     companion object {
@@ -62,7 +61,7 @@ class CameraActivity : AppCompatActivity() {
             override fun recordSuccess(url: String?, firstFrame: Bitmap?) {
                 val intent = Intent()
                 intent.putExtra("video", url)
-                intent.putExtra("firstFrame", File5Util.saveBitmap("photo", firstFrame))
+                intent.putExtra("firstFrame", FileUtil.saveBitmap("photo", firstFrame))
 
                 val player = MediaPlayer()
                 try {
