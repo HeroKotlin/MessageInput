@@ -5,7 +5,7 @@ import com.github.herokotlin.messageinput.model.Image
 
 interface MessageInputCallback {
 
-    fun onVoiceSend(audioPath: String, audioDuration: Int) {
+    fun onAudioSend(audioPath: String, audioDuration: Int) {
 
     }
 

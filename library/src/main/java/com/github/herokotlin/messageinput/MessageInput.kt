@@ -19,10 +19,11 @@ import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
+import android.widget.ImageView
 import com.github.herokotlin.circleview.CircleView
 import com.github.herokotlin.circleview.CircleViewCallback
 import com.github.herokotlin.emotioninput.EmotionInputCallback
+import com.github.herokotlin.emotioninput.EmotionInputConfiguration
 import com.github.herokotlin.emotioninput.filter.EmotionFilter
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.emotioninput.model.EmotionSet
@@ -46,6 +47,8 @@ class MessageInput : LinearLayout {
         const val IMAGE_ACTIVITY_REQUEST_CODE = 1324
 
     }
+
+    lateinit var configuration: MessageInputConfiguration
 
     var callback = object: MessageInputCallback { }
 
@@ -93,8 +96,6 @@ class MessageInput : LinearLayout {
             }
 
             field = value
-
-            Log.d("messageinput", "changeto ${value}")
 
         }
 
@@ -167,6 +168,12 @@ class MessageInput : LinearLayout {
                 text = textarea.text.toString()
             }
         })
+
+        emotionPanel.configuration = object: EmotionInputConfiguration(emotionPanel.context) {
+            override fun loadImage(imageView: ImageView, url: String) {
+                configuration.loadImage(imageView, url)
+            }
+        }
 
         emotionPanel.callback = object: EmotionInputCallback {
             override fun onEmotionClick(emotion: Emotion) {
@@ -256,7 +263,7 @@ class MessageInput : LinearLayout {
         voicePanel.callback = object: VoiceInputCallback {
 
             override fun onFinishRecord(filePath: String, duration: Int) {
-                callback.onVoiceSend(filePath, duration)
+                callback.onAudioSend(filePath, duration)
             }
 
         }
