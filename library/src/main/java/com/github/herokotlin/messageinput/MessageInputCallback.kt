@@ -1,7 +1,7 @@
 package com.github.herokotlin.messageinput
 
 import com.github.herokotlin.emotioninput.model.Emotion
-import com.github.herokotlin.messageinput.model.Image
+import com.github.herokotlin.messageinput.model.ImageFile
 
 interface MessageInputCallback {
 
@@ -9,15 +9,15 @@ interface MessageInputCallback {
 
     }
 
-    fun onVideoSend(videoPath: String, videoDuration: Int, thumbnail: Image) {
+    fun onVideoSend(videoPath: String, videoDuration: Int, thumbnail: ImageFile) {
 
     }
 
-    fun onPhotoSend(photo: Image) {
+    fun onPhotoSend(photo: ImageFile) {
 
     }
 
-    fun onImagesSend(images: List<Image>) {
+    fun onImagesSend(images: List<ImageFile>) {
 
     }
 

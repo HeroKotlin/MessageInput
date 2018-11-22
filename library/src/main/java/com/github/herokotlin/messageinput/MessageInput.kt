@@ -10,7 +10,6 @@ import android.util.AttributeSet
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
-import kotlinx.android.synthetic.main.message_input.view.*
 import android.view.WindowManager
 import android.widget.Toast
 import com.zhihu.matisse.engine.impl.GlideEngine
@@ -29,10 +28,11 @@ import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.emotioninput.model.EmotionSet
 import com.github.herokotlin.messageinput.enum.AdjustMode
 import com.github.herokotlin.messageinput.enum.ViewMode
-import com.github.herokotlin.messageinput.model.Image
+import com.github.herokotlin.messageinput.model.ImageFile
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
+import kotlinx.android.synthetic.main.message_input.view.*
 
 class MessageInput : LinearLayout {
 
@@ -427,11 +427,11 @@ class MessageInput : LinearLayout {
 
     }
 
-    private fun readImage(path: String): Image {
+    private fun readImage(path: String): ImageFile {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
         BitmapFactory.decodeFile(path, options)
-        return Image(path, options.outWidth, options.outHeight)
+        return ImageFile(path, options.outWidth, options.outHeight)
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
