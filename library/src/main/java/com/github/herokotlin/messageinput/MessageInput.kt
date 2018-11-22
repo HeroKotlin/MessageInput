@@ -128,10 +128,12 @@ class MessageInput : LinearLayout {
                 if (field.isBlank()) {
                     sendButton.visibility = View.VISIBLE
                     moreButton.visibility = View.GONE
+                    emotionPanel.isSendButtonEnabled = true
                 }
                 else {
                     sendButton.visibility = View.GONE
                     moreButton.visibility = View.VISIBLE
+                    emotionPanel.isSendButtonEnabled = false
                 }
             }
 
@@ -252,7 +254,7 @@ class MessageInput : LinearLayout {
             sendText()
         }
 
-        imageButton.onClick = {
+        photoButton.onClick = {
             requestImagePermissions()
         }
 
@@ -262,8 +264,8 @@ class MessageInput : LinearLayout {
 
         voicePanel.callback = object: VoiceInputCallback {
 
-            override fun onFinishRecord(filePath: String, duration: Int) {
-                callback.onAudioSend(filePath, duration)
+            override fun onFinishRecord(audioPath: String, audioDuration: Int) {
+                callback.onAudioSend(audioPath, audioDuration)
             }
 
         }
@@ -437,7 +439,7 @@ class MessageInput : LinearLayout {
             if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
                 when (resultCode) {
                     CameraActivity.RESULT_CODE_VIDEO -> {
-                        val path = data.getStringExtra("firstFrame")
+                        val path = data.getStringExtra("thumbnail")
                         callback.onVideoSend(
                             data.getStringExtra("video"),
                             data.getIntExtra("duration", 0),
@@ -451,7 +453,7 @@ class MessageInput : LinearLayout {
                 }
             }
             else if (requestCode == IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                callback.onImageSend(
+                callback.onImagesSend(
                     Matisse.obtainPathResult(data).map { readImage(it) }
                 )
             }

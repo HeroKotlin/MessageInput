@@ -5,7 +5,7 @@
     <corners android:radius="@dimen/message_input_send_button_border_radius"/>
 
     <stroke
-        android:width="1px"
+        android:width="@dimen/message_input_send_button_border_width"
         android:color="@color/message_input_send_button_border_color"/>
 
     <solid android:color="@color/message_input_send_button_bg_color_normal"/>

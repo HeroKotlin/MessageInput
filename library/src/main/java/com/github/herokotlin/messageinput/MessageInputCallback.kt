@@ -17,7 +17,7 @@ interface MessageInputCallback {
 
     }
 
-    fun onImageSend(images: List<Image>) {
+    fun onImagesSend(images: List<Image>) {
 
     }
 

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="message_input_bar_bg_color">#f6f6f6</color>
+    <color name="message_input_bar_bg_color">#F6F6F6</color>
     <color name="message_input_bar_border_color">#AAA</color>
 
-    <color name="message_input_textarea_bg_color">#fff</color>
+    <color name="message_input_textarea_bg_color">#FFF</color>
+    <color name="message_input_textarea_tint_color">#FFDBC0</color>
     <color name="message_input_textarea_text_color">#666666</color>
     <color name="message_input_textarea_border_color">#AAA</color>
-    <color name="message_input_textarea_cursor_color">#365AEE</color>
+    <color name="message_input_textarea_cursor_color">#FF8604</color>
 
     <color name="message_input_circle_button_border_color">#999</color>
     <color name="message_input_circle_button_bg_color_normal">#FFF</color>
