@@ -12,8 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.view.WindowManager
 import android.widget.Toast
-import com.zhihu.matisse.engine.impl.GlideEngine
-import android.content.pm.ActivityInfo
 import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.text.Editable
@@ -30,8 +28,6 @@ import com.github.herokotlin.messageinput.enum.AdjustMode
 import com.github.herokotlin.messageinput.enum.ViewMode
 import com.github.herokotlin.messageinput.model.ImageFile
 import com.github.herokotlin.voiceinput.VoiceInputCallback
-import com.zhihu.matisse.Matisse
-import com.zhihu.matisse.MimeType
 import kotlinx.android.synthetic.main.message_input.view.*
 
 class MessageInput : LinearLayout {
@@ -42,9 +38,7 @@ class MessageInput : LinearLayout {
 
         const val CAMERA_ACTIVITY_REQUEST_CODE = 1322
 
-        const val IMAGE_PERMISSION_REQUEST_CODE = 1323
-
-        const val IMAGE_ACTIVITY_REQUEST_CODE = 1324
+        const val IMAGE_ACTIVITY_REQUEST_CODE = 1323
 
     }
 
@@ -255,7 +249,7 @@ class MessageInput : LinearLayout {
         }
 
         photoButton.onClick = {
-            requestImagePermissions()
+            callback.onPhotoFeatureClick()
         }
 
         cameraButton.onClick = {
@@ -361,22 +355,6 @@ class MessageInput : LinearLayout {
 
     }
 
-    private fun openImageActivity() {
-
-        Matisse.from(context as Activity)
-                .choose(MimeType.ofImage())
-                .theme(R.style.Matisse_Dracula)
-                .countable(true)
-                .maxSelectable(9)
-                .spanCount(4)
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                .thumbnailScale(0.85f)
-                .originalEnable(true)
-                .imageEngine(GlideEngine())
-                .forResult(IMAGE_ACTIVITY_REQUEST_CODE)
-
-    }
-
     private fun requestCameraPermissions() {
 
         var permissions = arrayOf<String>()
@@ -406,27 +384,6 @@ class MessageInput : LinearLayout {
 
     }
 
-    private fun requestImagePermissions() {
-
-        var permissions = arrayOf<String>()
-
-        if (!voicePanel.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            permissions = permissions.plus(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        if (permissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                permissions,
-                IMAGE_PERMISSION_REQUEST_CODE
-            )
-        }
-        else {
-            openImageActivity()
-        }
-
-    }
-
     private fun readImage(path: String): ImageFile {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
@@ -452,11 +409,6 @@ class MessageInput : LinearLayout {
                     }
                 }
             }
-            else if (requestCode == IMAGE_ACTIVITY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                callback.onImagesSend(
-                    Matisse.obtainPathResult(data).map { readImage(it) }
-                )
-            }
         }
     }
 
@@ -474,15 +426,6 @@ class MessageInput : LinearLayout {
                 }
             }
             Toast.makeText(context, R.string.message_input_request_camera_permissions_failed, Toast.LENGTH_SHORT).show()
-        }
-        else if (requestCode == IMAGE_PERMISSION_REQUEST_CODE) {
-            if (grantResults.count() == 1) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openImageActivity()
-                    return
-                }
-            }
-            Toast.makeText(context, R.string.message_input_request_image_permissions_failed, Toast.LENGTH_SHORT).show()
         }
     }
 

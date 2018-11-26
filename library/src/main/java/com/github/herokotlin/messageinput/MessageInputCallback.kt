@@ -29,6 +29,10 @@ interface MessageInputCallback {
 
     }
 
+    fun onPhotoFeatureClick() {
+
+    }
+
     fun onLift() {
 
     }
