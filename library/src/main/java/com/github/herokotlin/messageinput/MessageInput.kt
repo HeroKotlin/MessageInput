@@ -38,8 +38,6 @@ class MessageInput : LinearLayout {
 
         const val CAMERA_ACTIVITY_REQUEST_CODE = 1322
 
-        const val IMAGE_ACTIVITY_REQUEST_CODE = 1323
-
     }
 
     lateinit var configuration: MessageInputConfiguration
