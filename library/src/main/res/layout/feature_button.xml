@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/message_input_feature_button_title_margin_top"
-        tools:text="@string/message_input_photo"
+        tools:text="@string/message_input_photo_feature_title"
         android:textSize="@dimen/message_input_feature_button_title_text_size"
         android:textColor="@color/message_input_feature_button_title_text_color"/>
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="message_input_bar_bg_color">#F6F6F6</color>
-    <color name="message_input_bar_border_color">#AAA</color>
+    <color name="message_input_bar_bg_color">#F4F4F6</color>
+    <color name="message_input_bar_border_color">#BBB</color>
 
     <color name="message_input_textarea_bg_color">#FFF</color>
     <color name="message_input_textarea_tint_color">#FFDBC0</color>
@@ -10,21 +10,21 @@
     <color name="message_input_textarea_border_color">#AAA</color>
     <color name="message_input_textarea_cursor_color">#FF8604</color>
 
-    <color name="message_input_circle_button_border_color">#999</color>
-    <color name="message_input_circle_button_bg_color_normal">#FFF</color>
-    <color name="message_input_circle_button_bg_color_pressed">#D4D4D4</color>
+    <color name="message_input_circle_button_border_color">#7F8389</color>
+    <color name="message_input_circle_button_bg_color_normal">#F4F4F6</color>
+    <color name="message_input_circle_button_bg_color_pressed">#E6E6E6</color>
 
-    <color name="message_input_send_button_text_color">#fff</color>
+    <color name="message_input_send_button_text_color">#FFF</color>
     <color name="message_input_send_button_bg_color_normal">#FF8604</color>
     <color name="message_input_send_button_bg_color_pressed">#F2760B</color>
     <color name="message_input_send_button_border_color">#EB7A00</color>
 
-    <color name="message_input_content_panel_bg_color">#ececec</color>
+    <color name="message_input_content_panel_bg_color">#F4F4F6</color>
 
     <color name="message_input_feature_button_title_text_color">#999</color>
 
-    <color name="message_input_feature_button_bg_color_normal">#FBFBFC</color>
-    <color name="message_input_feature_button_bg_color_pressed">#ccc</color>
-    <color name="message_input_feature_button_border_color">#bbb</color>
+    <color name="message_input_feature_button_bg_color_normal">#FBFBFB</color>
+    <color name="message_input_feature_button_bg_color_pressed">#E6E6E6</color>
+    <color name="message_input_feature_button_border_color">#CCC</color>
 
 </resources>

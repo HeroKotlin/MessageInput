@@ -93,7 +93,7 @@
                 android:layout_width="@dimen/message_input_send_button_width"
                 android:layout_height="@dimen/message_input_send_button_height"
                 android:visibility="gone"
-                android:text="@string/message_input_send"
+                android:text="@string/message_input_send_button_title"
                 android:textSize="@dimen/message_input_send_button_text_size"
                 android:textColor="@color/message_input_send_button_text_color"
                 android:minWidth="0dp"
@@ -129,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:feature_button_icon="@drawable/message_input_photo"
-                app:feature_button_title="@string/message_input_photo"/>
+                app:feature_button_title="@string/message_input_photo_feature_title"/>
 
             <com.github.herokotlin.messageinput.view.FeatureButton
                 android:id="@+id/cameraButton"
@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/message_input_feature_button_spacing"
                 app:feature_button_icon="@drawable/message_input_camera"
-                app:feature_button_title="@string/message_input_camera"/>
+                app:feature_button_title="@string/message_input_camera_feature_title"/>
 
         </LinearLayout>
 
