@@ -21,10 +21,9 @@
 
     <color name="message_input_content_panel_bg_color">#F4F4F6</color>
 
-    <color name="message_input_feature_button_title_text_color">#999</color>
-
     <color name="message_input_feature_button_bg_color_normal">#FBFBFB</color>
     <color name="message_input_feature_button_bg_color_pressed">#E6E6E6</color>
     <color name="message_input_feature_button_border_color">#CCC</color>
+    <color name="message_input_feature_button_title_text_color">#999</color>
 
 </resources>
