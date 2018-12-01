@@ -127,6 +127,8 @@ class MessageInput : LinearLayout {
                     moreButton.visibility = View.VISIBLE
                     emotionPanel.isSendButtonEnabled = false
                 }
+                // 为了 react-native...
+                requestLayout()
             }
 
             field = value

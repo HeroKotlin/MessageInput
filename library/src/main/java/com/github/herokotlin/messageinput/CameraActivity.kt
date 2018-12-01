@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.cjt2325.cameralibrary.JCameraView
 import com.cjt2325.cameralibrary.listener.ErrorListener
@@ -59,6 +60,7 @@ class CameraActivity : AppCompatActivity() {
 
         cameraView.setJCameraLisenter(object: JCameraListener {
             override fun recordSuccess(url: String?, firstFrame: Bitmap?) {
+                Log.d("messageInput", "record success $url")
                 val intent = Intent()
                 intent.putExtra("video", url)
                 intent.putExtra("thumbnail", FileUtil.saveBitmap("photo", firstFrame))
@@ -79,6 +81,7 @@ class CameraActivity : AppCompatActivity() {
             }
 
             override fun captureSuccess(bitmap: Bitmap?) {
+                Log.d("messageInput", "captrue success")
                 val intent = Intent()
                 intent.putExtra("photo", FileUtil.saveBitmap("photo", bitmap))
                 setResult(RESULT_CODE_PHOTO, intent)
