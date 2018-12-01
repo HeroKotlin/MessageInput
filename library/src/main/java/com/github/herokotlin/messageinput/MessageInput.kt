@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.ImageView
 import com.github.herokotlin.circleview.CircleView
 import com.github.herokotlin.circleview.CircleViewCallback
@@ -129,6 +130,7 @@ class MessageInput : LinearLayout {
                 }
                 // 为了 react-native...
                 requestLayout()
+                postInvalidate()
             }
 
             field = value
@@ -392,6 +394,7 @@ class MessageInput : LinearLayout {
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (data != null) {
+            Log.d("messageInput", "onActivityResult $resultCode")
             if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
                 when (resultCode) {
                     CameraActivity.RESULT_CODE_VIDEO -> {
