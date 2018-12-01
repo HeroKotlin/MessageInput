@@ -327,7 +327,6 @@ class MessageInput : LinearLayout {
             if (contentPanel.isKeyboardVisible) {
                 hideKeyboard()
                 hideContentPanel()
-                callback.onFall()
             }
         }
         else {

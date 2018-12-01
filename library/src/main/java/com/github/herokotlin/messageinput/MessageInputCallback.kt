@@ -17,10 +17,6 @@ interface MessageInputCallback {
 
     }
 
-    fun onImagesSend(images: List<ImageFile>) {
-
-    }
-
     fun onTextSend(text: String) {
 
     }
