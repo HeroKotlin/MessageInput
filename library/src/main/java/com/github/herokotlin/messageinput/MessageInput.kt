@@ -352,6 +352,7 @@ class MessageInput : LinearLayout {
 
         val intent = Intent(context, CameraActivity::class.java)
 
+        Log.d("messageInput", "openCameraActivity $context")
         (context as Activity).startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
 
     }
