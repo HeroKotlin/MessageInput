@@ -421,22 +421,19 @@ class MessageInput : LinearLayout {
         }
     }
 
-    fun requestPermissionsResult(requestCode: Int, grantResults: IntArray) {
+    fun requestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
-        voicePanel.requestPermissionsResult(requestCode, grantResults)
+        voicePanel.requestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            if (grantResults.count() == 3) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[2] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    callback.onRecordVideoPermissionsGranted()
-                    openCameraActivity()
+            for (i in 0 until permissions.size) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    callback.onRecordVideoPermissionsDenied()
                     return
                 }
             }
-            callback.onRecordVideoPermissionsDenied()
+            callback.onRecordVideoPermissionsGranted()
+            openCameraActivity()
         }
     }
 
