@@ -5,6 +5,10 @@ import com.github.herokotlin.messageinput.model.ImageFile
 
 interface MessageInputCallback {
 
+    fun onChildViewChange() {
+
+    }
+
     fun onRecordAudioWithoutPermissions() {
 
     }
