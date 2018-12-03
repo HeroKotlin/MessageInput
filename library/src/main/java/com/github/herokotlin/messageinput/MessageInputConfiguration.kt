@@ -10,4 +10,9 @@ abstract class MessageInputConfiguration(val context: Context) {
      */
     abstract fun loadImage(imageView: ImageView, url: String)
 
+    /**
+     * 请求权限
+     */
+    abstract fun requestPermissions(permissions: List<String>, requestCode: Int): Boolean
+
 }

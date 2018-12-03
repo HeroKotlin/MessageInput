@@ -5,27 +5,55 @@ import com.github.herokotlin.messageinput.model.ImageFile
 
 interface MessageInputCallback {
 
-    fun onAudioSend(audioPath: String, audioDuration: Int) {
+    fun onRecordAudioWithoutPermissions() {
 
     }
 
-    fun onVideoSend(videoPath: String, videoDuration: Int, thumbnail: ImageFile) {
+    fun onRecordAudioDurationLessThanMinDuration() {
 
     }
 
-    fun onPhotoSend(photo: ImageFile) {
+    fun onRecordAudioWithoutExternalStorage() {
 
     }
 
-    fun onTextSend(text: String) {
+    fun onRecordAudioPermissionsGranted() {
 
     }
 
-    fun onEmotionSend(emotion: Emotion) {
+    fun onRecordAudioPermissionsDenied() {
 
     }
 
-    fun onPhotoFeatureClick() {
+    fun onRecordVideoPermissionsGranted() {
+
+    }
+
+    fun onRecordVideoPermissionsDenied() {
+
+    }
+
+    fun onSendAudio(audioPath: String, audioDuration: Int) {
+
+    }
+
+    fun onSendVideo(videoPath: String, videoDuration: Int, thumbnail: ImageFile) {
+
+    }
+
+    fun onSendPhoto(photo: ImageFile) {
+
+    }
+
+    fun onSendText(text: String) {
+
+    }
+
+    fun onSendEmotion(emotion: Emotion) {
+
+    }
+
+    fun onClickPhotoFeature() {
 
     }
 

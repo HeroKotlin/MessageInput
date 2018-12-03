@@ -5,18 +5,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
 import android.util.AttributeSet
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.view.WindowManager
-import android.widget.Toast
 import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.ImageView
 import com.github.herokotlin.circleview.CircleView
 import com.github.herokotlin.circleview.CircleViewCallback
@@ -29,6 +26,7 @@ import com.github.herokotlin.messageinput.enum.AdjustMode
 import com.github.herokotlin.messageinput.enum.ViewMode
 import com.github.herokotlin.messageinput.model.ImageFile
 import com.github.herokotlin.voiceinput.VoiceInputCallback
+import com.github.herokotlin.voiceinput.VoiceInputConfiguration
 import kotlinx.android.synthetic.main.message_input.view.*
 
 class MessageInput : LinearLayout {
@@ -43,7 +41,7 @@ class MessageInput : LinearLayout {
 
     lateinit var configuration: MessageInputConfiguration
 
-    var callback = object: MessageInputCallback { }
+    lateinit var callback: MessageInputCallback
 
     var viewMode = ViewMode.KEYBOARD
 
@@ -128,9 +126,6 @@ class MessageInput : LinearLayout {
                     moreButton.visibility = View.VISIBLE
                     emotionPanel.isSendButtonEnabled = false
                 }
-                // 为了 react-native...
-                requestLayout()
-                postInvalidate()
             }
 
             field = value
@@ -147,6 +142,11 @@ class MessageInput : LinearLayout {
 
     constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
         init()
+    }
+
+    fun init(configuration: MessageInputConfiguration, callback: MessageInputCallback) {
+        this.configuration = configuration
+        this.callback = callback
     }
 
     private fun init() {
@@ -179,7 +179,7 @@ class MessageInput : LinearLayout {
                     textarea.insertEmotion(emotion)
                 }
                 else {
-                    callback.onEmotionSend(emotion)
+                    callback.onSendEmotion(emotion)
                 }
             }
 
@@ -251,20 +251,59 @@ class MessageInput : LinearLayout {
         }
 
         photoButton.onClick = {
-            callback.onPhotoFeatureClick()
+            callback.onClickPhotoFeature()
         }
 
         cameraButton.onClick = {
-            requestCameraPermissions()
-        }
-
-        voicePanel.callback = object: VoiceInputCallback {
-
-            override fun onFinishRecord(audioPath: String, audioDuration: Int) {
-                callback.onAudioSend(audioPath, audioDuration)
+            val hasPermissions = configuration.requestPermissions(
+                listOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.CAMERA
+                ),
+                CAMERA_PERMISSION_REQUEST_CODE
+            )
+            if (hasPermissions) {
+                openCameraActivity()
             }
-
         }
+
+        voicePanel.init(
+            object: VoiceInputConfiguration(context) {
+
+                override fun requestPermissions(permissions: List<String>, requestCode: Int): Boolean {
+                    return configuration.requestPermissions(permissions, requestCode)
+                }
+
+            },
+            object: VoiceInputCallback {
+
+                override fun onFinishRecord(audioPath: String, audioDuration: Int) {
+                    callback.onSendAudio(audioPath, audioDuration)
+                }
+
+                override fun onRecordWithoutPermissions() {
+                    callback.onRecordAudioWithoutPermissions()
+                }
+
+                override fun onRecordDurationLessThanMinDuration() {
+                    callback.onRecordAudioDurationLessThanMinDuration()
+                }
+
+                override fun onRecordWithoutExternalStorage() {
+                    callback.onRecordAudioWithoutExternalStorage()
+                }
+
+                override fun onPermissionsGranted() {
+                    callback.onRecordAudioPermissionsGranted()
+                }
+
+                override fun onPermissionsDenied() {
+                    callback.onRecordAudioPermissionsDenied()
+                }
+
+            }
+        )
 
         textarea.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -343,7 +382,7 @@ class MessageInput : LinearLayout {
     private fun sendText() {
         val text = textarea.text
         if (text.isNotBlank()) {
-            callback.onTextSend(text.toString())
+            callback.onSendText(text.toString())
             text.clear()
         }
     }
@@ -352,37 +391,7 @@ class MessageInput : LinearLayout {
 
         val intent = Intent(context, CameraActivity::class.java)
 
-        Log.d("messageInput", "openCameraActivity $context")
         (context as Activity).startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
-
-    }
-
-    private fun requestCameraPermissions() {
-
-        var permissions = arrayOf<String>()
-
-        if (!voicePanel.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            permissions = permissions.plus(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        if (!voicePanel.hasPermission(Manifest.permission.RECORD_AUDIO)) {
-            permissions = permissions.plus(Manifest.permission.RECORD_AUDIO)
-        }
-
-        if (!voicePanel.hasPermission(Manifest.permission.CAMERA)) {
-            permissions = permissions.plus(Manifest.permission.CAMERA)
-        }
-
-        if (permissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                context as Activity,
-                permissions,
-                CAMERA_PERMISSION_REQUEST_CODE
-            )
-        }
-        else {
-            openCameraActivity()
-        }
 
     }
 
@@ -394,22 +403,19 @@ class MessageInput : LinearLayout {
     }
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null) {
-            Log.d("messageInput", "onActivityResult $resultCode")
-            if (requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
-                when (resultCode) {
-                    CameraActivity.RESULT_CODE_VIDEO -> {
-                        val path = data.getStringExtra("thumbnail")
-                        callback.onVideoSend(
-                            data.getStringExtra("video"),
-                            data.getIntExtra("duration", 0),
-                            readImage(path)
-                        )
-                    }
-                    CameraActivity.RESULT_CODE_PHOTO -> {
-                        val path = data.getStringExtra("photo")
-                        callback.onPhotoSend(readImage(path))
-                    }
+        if (data != null && requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
+            when (resultCode) {
+                CameraActivity.RESULT_CODE_VIDEO -> {
+                    val path = data.getStringExtra("thumbnail")
+                    callback.onSendVideo(
+                        data.getStringExtra("video"),
+                        data.getIntExtra("duration", 0),
+                        readImage(path)
+                    )
+                }
+                CameraActivity.RESULT_CODE_PHOTO -> {
+                    val path = data.getStringExtra("photo")
+                    callback.onSendPhoto(readImage(path))
                 }
             }
         }
@@ -418,17 +424,19 @@ class MessageInput : LinearLayout {
     fun requestPermissionsResult(requestCode: Int, grantResults: IntArray) {
 
         voicePanel.requestPermissionsResult(requestCode, grantResults)
+
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
             if (grantResults.count() == 3) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED
                     && grantResults[2] == PackageManager.PERMISSION_GRANTED
                 ) {
+                    callback.onRecordVideoPermissionsGranted()
                     openCameraActivity()
                     return
                 }
             }
-            Toast.makeText(context, R.string.message_input_request_camera_permissions_failed, Toast.LENGTH_SHORT).show()
+            callback.onRecordVideoPermissionsDenied()
         }
     }
 

@@ -1,8 +1,6 @@
 <resources>
     <string name="message_input_photo_feature_title">图片</string>
     <string name="message_input_camera_feature_title">拍摄</string>
-    <string name="message_input_request_camera_permissions_failed">获取拍摄权限失败，无法拍摄</string>
-    <string name="message_input_request_image_permissions_failed">获取相册权限失败，无法读取相册</string>
     <string name="message_input_camera_tip">轻触拍照，长按摄像</string>
     <string name="message_input_send_button_title">发送</string>
 </resources>
