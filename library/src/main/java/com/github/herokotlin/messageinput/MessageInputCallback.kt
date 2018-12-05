@@ -57,6 +57,10 @@ interface MessageInputCallback {
 
     }
 
+    fun onTextChange(text: String) {
+
+    }
+
     fun onClickPhotoFeature() {
 
     }

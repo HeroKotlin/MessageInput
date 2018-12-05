@@ -96,9 +96,6 @@ class MessageInput : LinearLayout {
     private var adjustMode = AdjustMode.DEFAULT
 
         set(value) {
-            if (field == value) {
-                return
-            }
 
             val mode = when (value) {
                 AdjustMode.NOTHING -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING }
@@ -110,7 +107,7 @@ class MessageInput : LinearLayout {
             field = value
         }
 
-    private var text = ""
+    private var plainText = ""
 
         set(value) {
 
@@ -133,6 +130,8 @@ class MessageInput : LinearLayout {
             }
 
             field = value
+
+            callback.onTextChange(value)
 
         }
 
@@ -167,7 +166,7 @@ class MessageInput : LinearLayout {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                text = textarea.text.toString()
+                plainText = textarea.text.toString()
             }
         })
 
@@ -210,7 +209,8 @@ class MessageInput : LinearLayout {
                     if (circleView == voiceButton) {
                         if (viewMode == ViewMode.VOICE) {
                             showKeyboard()
-                        } else {
+                        }
+                        else {
                             viewMode = ViewMode.VOICE
                         }
                     }
@@ -375,9 +375,13 @@ class MessageInput : LinearLayout {
         }
     }
 
-    fun setValue(value: String) {
+    fun getText(): String {
+        return plainText
+    }
+
+    fun setText(text: String) {
         textarea.clear()
-        textarea.insertText(value)
+        textarea.insertText(text)
     }
 
     fun setEmotionSetList(emotionSetList: List<EmotionSet>) {
@@ -393,10 +397,9 @@ class MessageInput : LinearLayout {
     }
 
     private fun sendText() {
-        val text = textarea.text
-        if (text.isNotBlank()) {
-            callback.onSendText(text.toString())
-            text.clear()
+        if (plainText.isNotBlank()) {
+            callback.onSendText(plainText)
+            textarea.clear()
         }
     }
 
