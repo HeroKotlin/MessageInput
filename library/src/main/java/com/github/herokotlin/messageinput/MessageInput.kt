@@ -361,18 +361,6 @@ class MessageInput : LinearLayout {
 
     }
 
-    fun setEmotionSetList(emotionSetList: List<EmotionSet>) {
-        emotionPanel.emotionSetList = emotionSetList
-    }
-
-    fun addEmotionFilter(emotionFilter: EmotionFilter) {
-        textarea.addFilter(emotionFilter)
-    }
-
-    fun removeEmotionFilter(emotionFilter: EmotionFilter) {
-        textarea.removeFilter(emotionFilter)
-    }
-
     fun reset() {
         if (viewMode == ViewMode.KEYBOARD) {
             if (contentPanel.isKeyboardVisible) {
@@ -385,6 +373,23 @@ class MessageInput : LinearLayout {
             hideContentPanel()
             callback.onFall()
         }
+    }
+
+    fun setValue(value: String) {
+        textarea.clear()
+        textarea.insertText(value)
+    }
+
+    fun setEmotionSetList(emotionSetList: List<EmotionSet>) {
+        emotionPanel.emotionSetList = emotionSetList
+    }
+
+    fun addEmotionFilter(emotionFilter: EmotionFilter) {
+        textarea.addFilter(emotionFilter)
+    }
+
+    fun removeEmotionFilter(emotionFilter: EmotionFilter) {
+        textarea.removeFilter(emotionFilter)
     }
 
     private fun sendText() {
