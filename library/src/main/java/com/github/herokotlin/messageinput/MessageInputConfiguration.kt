@@ -6,6 +6,11 @@ import android.widget.ImageView
 abstract class MessageInputConfiguration(val context: Context) {
 
     /**
+     * 表情和文本的高度比例
+     */
+    var emotionTextHeightRatio = 1.1f
+
+    /**
      * 加载图片
      */
     abstract fun loadImage(imageView: ImageView, url: String)

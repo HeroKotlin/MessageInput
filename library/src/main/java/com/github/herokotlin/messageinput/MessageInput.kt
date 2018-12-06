@@ -12,8 +12,6 @@ import android.widget.LinearLayout
 import android.view.WindowManager
 import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.ImageView
 import com.github.herokotlin.circleview.CircleView
 import com.github.herokotlin.circleview.CircleViewCallback
@@ -150,25 +148,16 @@ class MessageInput : LinearLayout {
     fun init(configuration: MessageInputConfiguration, callback: MessageInputCallback) {
         this.configuration = configuration
         this.callback = callback
+        textarea.emotionTextHeightRatio = configuration.emotionTextHeightRatio
     }
 
     private fun init() {
 
         LayoutInflater.from(context).inflate(R.layout.message_input, this)
 
-        textarea.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                plainText = textarea.text.toString()
-            }
-        })
+        textarea.onTextChange = {
+            plainText = textarea.text.toString()
+        }
 
         emotionPanel.configuration = object: EmotionInputConfiguration(emotionPanel.context) {
             override fun loadImage(imageView: ImageView, url: String) {
