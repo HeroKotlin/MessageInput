@@ -7,7 +7,7 @@
     <dimen name="message_input_bar_item_spacing">8dp</dimen>
 
     <dimen name="message_input_textarea_text_size">16sp</dimen>
-    <dimen name="message_input_textarea_line_spacing">1sp</dimen>
+    <dimen name="message_input_textarea_line_spacing">1dp</dimen>
     <dimen name="message_input_textarea_border_width">1px</dimen>
     <dimen name="message_input_textarea_border_radius">4dp</dimen>
     <dimen name="message_input_textarea_padding_horizontal">8dp</dimen>
