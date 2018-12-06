@@ -95,6 +95,10 @@ class MessageInput : LinearLayout {
 
         set(value) {
 
+            if (field == value) {
+                return
+            }
+
             val mode = when (value) {
                 AdjustMode.NOTHING -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING }
                 else -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE }
