@@ -92,9 +92,9 @@ class MessageInput : LinearLayout {
         }
 
     /**
-     *  输入框聚焦时是否调整 adjust mode
+     *  是否需要调整 adjust mode
      */
-    var changeAjustModeOnFocus = true
+    var needChangeAdjustMode = true
 
     private var adjustMode = AdjustMode.DEFAULT
 
@@ -104,15 +104,17 @@ class MessageInput : LinearLayout {
                 return
             }
 
-            val mode = when (value) {
-                AdjustMode.NOTHING -> {
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+            if (needChangeAdjustMode) {
+                val mode = when (value) {
+                    AdjustMode.NOTHING -> {
+                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+                    }
+                    else -> {
+                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                    }
                 }
-                else -> {
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-                }
+                (context as Activity).window.setSoftInputMode(mode)
             }
-            (context as Activity).window.setSoftInputMode(mode)
 
             field = value
         }
@@ -330,9 +332,7 @@ class MessageInput : LinearLayout {
                     // 从别的模式切过来的
                     if (adjustMode == AdjustMode.NOTHING && viewMode == ViewMode.KEYBOARD) {
                         hideContentPanel()
-                        if (changeAjustModeOnFocus) {
-                            adjustMode = AdjustMode.RESIZE
-                        }
+                        adjustMode = AdjustMode.RESIZE
                     }
                     if (isLift) {
                         callback.onLift()
