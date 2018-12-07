@@ -91,11 +91,6 @@ class MessageInput : LinearLayout {
 
         }
 
-    /**
-     *  是否需要调整 adjust mode
-     */
-    var needChangeAdjustMode = true
-
     private var adjustMode = AdjustMode.DEFAULT
 
         set(value) {
@@ -104,17 +99,15 @@ class MessageInput : LinearLayout {
                 return
             }
 
-            if (needChangeAdjustMode) {
-                val mode = when (value) {
-                    AdjustMode.NOTHING -> {
-                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
-                    }
-                    else -> {
-                        WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-                    }
+            val mode = when (value) {
+                AdjustMode.NOTHING -> {
+                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
                 }
-                (context as Activity).window.setSoftInputMode(mode)
+                else -> {
+                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                }
             }
+            (context as Activity).window.setSoftInputMode(mode)
 
             field = value
         }
@@ -339,14 +332,10 @@ class MessageInput : LinearLayout {
                     }
                 }
 
-                if (needChangeAdjustMode) {
-                    // 等软键盘起来后再改成 resize
-                    // 方便下次能正常触发
-                    postDelayed(callback, 400)
-                }
-                else {
-                    callback()
-                }
+                // 等软键盘起来后再改成 resize
+                // 方便下次能正常触发
+                postDelayed(callback, 400)
+
             }
         }
 
