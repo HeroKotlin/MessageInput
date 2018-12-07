@@ -91,6 +91,11 @@ class MessageInput : LinearLayout {
 
         }
 
+    /**
+     *  输入框聚焦时是否调整 adjust mode
+     */
+    var changeAjustModeOnFocus = true
+
     private var adjustMode = AdjustMode.DEFAULT
 
         set(value) {
@@ -100,10 +105,13 @@ class MessageInput : LinearLayout {
             }
 
             val mode = when (value) {
-                AdjustMode.NOTHING -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING }
-                else -> { WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE }
+                AdjustMode.NOTHING -> {
+                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+                }
+                else -> {
+                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                }
             }
-
             (context as Activity).window.setSoftInputMode(mode)
 
             field = value
@@ -318,22 +326,22 @@ class MessageInput : LinearLayout {
                     isLift = true
                 }
 
-                // 等软键盘起来后再改成 resize
-                // 方便下次能正常触发
-
-                postDelayed(
-                    {
-                        // 从别的模式切过来的
-                        if (adjustMode == AdjustMode.NOTHING && viewMode == ViewMode.KEYBOARD) {
-                            hideContentPanel()
+                val callback = {
+                    // 从别的模式切过来的
+                    if (adjustMode == AdjustMode.NOTHING && viewMode == ViewMode.KEYBOARD) {
+                        hideContentPanel()
+                        if (changeAjustModeOnFocus) {
                             adjustMode = AdjustMode.RESIZE
                         }
-                        if (isLift) {
-                            callback.onLift()
-                        }
-                    },
-                    400
-                )
+                    }
+                    if (isLift) {
+                        callback.onLift()
+                    }
+                }
+
+                // 等软键盘起来后再改成 resize
+                // 方便下次能正常触发
+                postDelayed(callback, 400)
 
             }
         }
