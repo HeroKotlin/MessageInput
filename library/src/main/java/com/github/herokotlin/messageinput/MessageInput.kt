@@ -339,10 +339,14 @@ class MessageInput : LinearLayout {
                     }
                 }
 
-                // 等软键盘起来后再改成 resize
-                // 方便下次能正常触发
-                postDelayed(callback, 400)
-
+                if (needChangeAdjustMode) {
+                    // 等软键盘起来后再改成 resize
+                    // 方便下次能正常触发
+                    postDelayed(callback, 400)
+                }
+                else {
+                    callback()
+                }
             }
         }
 
