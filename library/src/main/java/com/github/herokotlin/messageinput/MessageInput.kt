@@ -268,14 +268,19 @@ class MessageInput : LinearLayout {
             }
         }
 
+        val voiceInputConfiguration = object: VoiceInputConfiguration(context) {
+
+            override fun requestPermissions(permissions: List<String>, requestCode: Int): Boolean {
+                return configuration.requestPermissions(permissions, requestCode)
+            }
+
+        }
+
+        voiceInputConfiguration.audioBitRate = 128000
+        voiceInputConfiguration.audioSampleRate = 22050
+
         voicePanel.init(
-            object: VoiceInputConfiguration(context) {
-
-                override fun requestPermissions(permissions: List<String>, requestCode: Int): Boolean {
-                    return configuration.requestPermissions(permissions, requestCode)
-                }
-
-            },
+            voiceInputConfiguration,
             object: VoiceInputCallback {
 
                 override fun onFinishRecord(audioPath: String, audioDuration: Int) {
