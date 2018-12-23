@@ -49,21 +49,23 @@ class MessageInput : LinearLayout {
                 return
             }
 
-            if (value == ViewMode.VOICE) {
-                voicePanel.requestPermissions()
-                voicePanel.visibility = View.VISIBLE
-                emotionPanel.visibility = View.GONE
-                morePanel.visibility = View.GONE
-            }
-            else if (value == ViewMode.EMOTION) {
-                voicePanel.visibility = View.GONE
-                emotionPanel.visibility = View.VISIBLE
-                morePanel.visibility = View.GONE
-            }
-            else if (value == ViewMode.MORE) {
-                voicePanel.visibility = View.GONE
-                emotionPanel.visibility = View.GONE
-                morePanel.visibility = View.VISIBLE
+            when (value) {
+                ViewMode.VOICE -> {
+                    voicePanel.requestPermissions()
+                    voicePanel.visibility = View.VISIBLE
+                    emotionPanel.visibility = View.GONE
+                    morePanel.visibility = View.GONE
+                }
+                ViewMode.EMOTION -> {
+                    voicePanel.visibility = View.GONE
+                    emotionPanel.visibility = View.VISIBLE
+                    morePanel.visibility = View.GONE
+                }
+                ViewMode.MORE -> {
+                    voicePanel.visibility = View.GONE
+                    emotionPanel.visibility = View.GONE
+                    morePanel.visibility = View.VISIBLE
+                }
             }
 
             // 切换到语音、表情、更多
@@ -276,8 +278,8 @@ class MessageInput : LinearLayout {
 
         }
 
-        voiceInputConfiguration.audioBitRate = 128000
-        voiceInputConfiguration.audioSampleRate = 22050
+        voiceInputConfiguration.audioBitRate = configuration.audioBitRate
+        voiceInputConfiguration.audioSampleRate = configuration.audioSampleRate
 
         voicePanel.init(
             voiceInputConfiguration,

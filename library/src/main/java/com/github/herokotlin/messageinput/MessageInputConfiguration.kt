@@ -8,7 +8,17 @@ abstract class MessageInputConfiguration(val context: Context) {
     /**
      * 表情和文本的高度比例
      */
-    var emotionTextHeightRatio = 1.1f
+    var emotionTextHeightRatio = 1f
+
+    /**
+     * 码率
+     */
+    var audioBitRate = 320000
+
+    /**
+     * 采样率
+     */
+    var audioSampleRate = 44100
 
     /**
      * 加载图片
