@@ -142,27 +142,23 @@ class MessageInput : LinearLayout {
 
         }
 
-    constructor(context: Context) : super(context) {
-        init()
-    }
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        init()
-    }
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
-        init()
-    }
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
 
     fun init(configuration: MessageInputConfiguration, callback: MessageInputCallback) {
         this.configuration = configuration
         this.callback = callback
-        textarea.emotionTextHeightRatio = configuration.emotionTextHeightRatio
+        init()
     }
 
     private fun init() {
 
         LayoutInflater.from(context).inflate(R.layout.message_input, this)
+
+        textarea.emotionTextHeightRatio = configuration.emotionTextHeightRatio
 
         textarea.onTextChange = {
             plainText = textarea.text.toString()
