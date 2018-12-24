@@ -136,7 +136,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/message_input_feature_button_spacing"
-                android:visibility="gone"
                 app:feature_button_icon="@drawable/message_input_camera"
                 app:feature_button_title="@string/message_input_camera_feature_title"/>
 
