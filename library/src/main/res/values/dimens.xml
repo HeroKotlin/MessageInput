@@ -6,7 +6,7 @@
     <dimen name="message_input_bar_border_width">1px</dimen>
     <dimen name="message_input_bar_item_spacing">8dp</dimen>
 
-    <dimen name="message_input_textarea_text_size">16sp</dimen>
+    <dimen name="message_input_textarea_text_size">16dp</dimen>
     <dimen name="message_input_textarea_line_spacing">1dp</dimen>
     <dimen name="message_input_textarea_border_width">1px</dimen>
     <dimen name="message_input_textarea_border_radius">4dp</dimen>
@@ -22,7 +22,7 @@
     <dimen name="message_input_send_button_height">34dp</dimen>
     <dimen name="message_input_send_button_border_radius">4dp</dimen>
     <dimen name="message_input_send_button_border_width">1px</dimen>
-    <dimen name="message_input_send_button_text_size">14sp</dimen>
+    <dimen name="message_input_send_button_text_size">14dp</dimen>
     <dimen name="message_input_send_button_margin_bottom">2dp</dimen>
 
     <dimen name="message_input_feature_panel_padding_horizontal">30dp</dimen>
@@ -30,7 +30,7 @@
 
     <dimen name="message_input_feature_button_spacing">26dp</dimen>
 
-    <dimen name="message_input_feature_button_title_text_size">12sp</dimen>
+    <dimen name="message_input_feature_button_title_text_size">12dp</dimen>
     <dimen name="message_input_feature_button_title_margin_top">6dp</dimen>
 
     <dimen name="message_input_feature_button_border_radius">12dp</dimen>
