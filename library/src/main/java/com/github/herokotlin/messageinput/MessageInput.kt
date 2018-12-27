@@ -289,6 +289,14 @@ class MessageInput : LinearLayout {
                     callback.onChildViewChange()
                 }
 
+                override fun onPlayButtonClick() {
+                    callback.onUseAudio()
+                }
+
+                override fun onRecordButtonClick() {
+                    callback.onUseAudio()
+                }
+
                 override fun onRecordWithoutPermissions() {
                     callback.onRecordAudioWithoutPermissions()
                 }
@@ -391,6 +399,18 @@ class MessageInput : LinearLayout {
 
     fun removeEmotionFilter(emotionFilter: EmotionFilter) {
         textarea.removeFilter(emotionFilter)
+    }
+
+    /**
+     * 确保音频可用，通常是外部要用音频了
+     */
+    fun ensureAudioAvailable() {
+        if (voicePanel.isRecording) {
+            voicePanel.stopRecord()
+        }
+        else if (voicePanel.isPlaying) {
+            voicePanel.stopPlay()
+        }
     }
 
     private fun sendText() {

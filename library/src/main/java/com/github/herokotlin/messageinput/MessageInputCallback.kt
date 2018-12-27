@@ -37,6 +37,10 @@ interface MessageInputCallback {
 
     }
 
+    fun onUseAudio() {
+
+    }
+
     fun onSendAudio(audioPath: String, audioDuration: Int) {
 
     }
