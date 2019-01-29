@@ -3,7 +3,9 @@
           package="com.github.herokotlin.messageinput">
 
     <application>
-        <activity android:name=".CameraActivity">
+        <activity android:name=".CameraActivity"
+                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

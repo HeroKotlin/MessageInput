@@ -88,9 +88,6 @@ class MessageInput : LinearLayout {
 
             field = value
 
-
-            callback.onChildViewChange()
-
         }
 
     private var adjustMode = AdjustMode.DEFAULT
@@ -133,7 +130,6 @@ class MessageInput : LinearLayout {
                     moreButton.visibility = View.VISIBLE
                     emotionPanel.isSendButtonEnabled = false
                 }
-                callback.onChildViewChange()
             }
 
             field = value
@@ -283,10 +279,6 @@ class MessageInput : LinearLayout {
 
                 override fun onFinishRecord(audioPath: String, audioDuration: Int) {
                     callback.onSendAudio(audioPath, audioDuration)
-                }
-
-                override fun onPreviewingChange(isPreviewing: Boolean) {
-                    callback.onChildViewChange()
                 }
 
                 override fun onPlayButtonClick() {

@@ -35,8 +35,6 @@ class CameraActivity : AppCompatActivity() {
 
         window.decorView.systemUiVisibility = flags
 
-        supportActionBar?.hide()
-
 
         setContentView(R.layout.activity_camera)
 
