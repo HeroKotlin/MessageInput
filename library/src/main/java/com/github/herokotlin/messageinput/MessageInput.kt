@@ -35,6 +35,13 @@ class MessageInput : LinearLayout {
 
         const val CAMERA_ACTIVITY_REQUEST_CODE = 1322
 
+        fun setSoftInputMode(activity: Activity, resize: Boolean) {
+
+            activity.window.setSoftInputMode(
+                if (resize) WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE else WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+            )
+
+        }
     }
 
     lateinit var configuration: MessageInputConfiguration
@@ -98,17 +105,19 @@ class MessageInput : LinearLayout {
                 return
             }
 
-            val mode = when (value) {
+            val resize = when (value) {
                 AdjustMode.NOTHING -> {
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
+                    false
                 }
                 else -> {
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                    true
                 }
             }
-            (context as Activity).window.setSoftInputMode(mode)
+
+            setSoftInputMode(context as Activity, resize)
 
             field = value
+
         }
 
     private var plainText = ""

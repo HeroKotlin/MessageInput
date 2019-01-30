@@ -15,7 +15,7 @@ import com.cjt2325.cameralibrary.util.FileUtil
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.io.IOException
 
-class CameraActivity : AppCompatActivity() {
+internal class CameraActivity : AppCompatActivity() {
 
     companion object {
         const val RESULT_CODE_VIDEO = 101
