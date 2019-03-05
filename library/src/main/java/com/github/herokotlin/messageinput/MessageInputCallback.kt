@@ -65,6 +65,26 @@ interface MessageInputCallback {
 
     }
 
+    fun onClickFileFeature() {
+
+    }
+
+    fun onClickUserFeature() {
+
+    }
+
+    fun onClickMovieFeature() {
+
+    }
+
+    fun onClickPhoneFeature() {
+
+    }
+
+    fun onClickLocationFeature() {
+
+    }
+
     fun onLift() {
 
     }

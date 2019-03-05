@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.view.WindowManager
 import android.graphics.BitmapFactory
 import android.support.v4.content.ContextCompat
+import android.widget.FrameLayout
 import android.widget.ImageView
 import com.github.herokotlin.circleview.CircleView
 import com.github.herokotlin.circleview.CircleViewCallback
@@ -21,8 +22,10 @@ import com.github.herokotlin.emotioninput.filter.EmotionFilter
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.emotioninput.model.EmotionSet
 import com.github.herokotlin.messageinput.enum.AdjustMode
+import com.github.herokotlin.messageinput.enum.FeatureType
 import com.github.herokotlin.messageinput.enum.ViewMode
 import com.github.herokotlin.messageinput.model.ImageFile
+import com.github.herokotlin.messageinput.view.FeatureButton
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.github.herokotlin.voiceinput.VoiceInputConfiguration
 import kotlinx.android.synthetic.main.message_input.view.*
@@ -147,6 +150,28 @@ class MessageInput : LinearLayout {
 
         }
 
+    private var isFeatureListCreated = false
+
+    private val featurePanelPaddingVertical: Int by lazy {
+        resources.getDimensionPixelSize(R.dimen.message_input_feature_panel_padding_vertical)
+    }
+
+    private val featureButtonWidth: Int by lazy {
+        resources.getDimensionPixelSize(R.dimen.message_input_feature_button_width)
+    }
+
+    private val featureButtonHeight: Int by lazy {
+        resources.getDimensionPixelSize(R.dimen.message_input_feature_button_height)
+    }
+
+    private val featureButtonRowSpacing: Int by lazy {
+        resources.getDimensionPixelSize(R.dimen.message_input_feature_button_row_spacing)
+    }
+
+    private val featureButtonColumnSpacing: Int by lazy {
+        resources.getDimensionPixelSize(R.dimen.message_input_feature_button_column_spacing)
+    }
+
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -251,24 +276,6 @@ class MessageInput : LinearLayout {
 
         sendButton.setOnClickListener {
             sendText()
-        }
-
-        photoButton.onClick = {
-            callback.onClickPhotoFeature()
-        }
-
-        cameraButton.onClick = {
-            val hasPermissions = configuration.requestPermissions(
-                listOf(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.RECORD_AUDIO,
-                    Manifest.permission.CAMERA
-                ),
-                CAMERA_PERMISSION_REQUEST_CODE
-            )
-            if (hasPermissions) {
-                openCameraActivity()
-            }
         }
 
         val voiceInputConfiguration = object: VoiceInputConfiguration(context) {
@@ -469,6 +476,113 @@ class MessageInput : LinearLayout {
             callback.onRecordVideoPermissionsGranted()
             openCameraActivity()
         }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        ensureFeatureListCreated(w)
+    }
+
+    private fun ensureFeatureListCreated(width: Int) {
+
+        if (isFeatureListCreated || width <= 0) {
+            return
+        }
+
+        // 屏幕宽度不可控，因此改成计算获得
+        val columnCount = 4
+
+        val columnSpaing = (columnCount - 1) * featureButtonColumnSpacing
+
+        val buttonWidth = featureButtonWidth
+        val buttonHeight = featureButtonHeight
+
+        val paddingHorizontal = (width - columnCount * buttonWidth - columnSpaing) / 2
+        val paddingVertical = featurePanelPaddingVertical
+
+        val featureList = configuration.featureList
+        for (i in 0 until featureList.count()) {
+
+            val featureButton: FeatureButton = when (featureList[i]) {
+                FeatureType.PHOTO -> {
+                    createFeatureButton(R.string.message_input_photo_feature_title, R.drawable.message_input_photo) {
+                        callback.onClickPhotoFeature()
+                    }
+                }
+                FeatureType.CAMERA -> {
+                    createFeatureButton(R.string.message_input_camera_feature_title, R.drawable.message_input_camera) {
+                        val hasPermissions = configuration.requestPermissions(
+                            listOf(
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.RECORD_AUDIO,
+                                Manifest.permission.CAMERA
+                            ),
+                            CAMERA_PERMISSION_REQUEST_CODE
+                        )
+                        if (hasPermissions) {
+                            openCameraActivity()
+                        }
+                    }
+                }
+                FeatureType.FILE -> {
+                    createFeatureButton(R.string.message_input_file_feature_title, R.drawable.message_input_file) {
+                        callback.onClickFileFeature()
+                    }
+                }
+                FeatureType.USER -> {
+                    createFeatureButton(R.string.message_input_user_feature_title, R.drawable.message_input_user) {
+                        callback.onClickUserFeature()
+                    }
+                }
+                FeatureType.MOVIE -> {
+                    createFeatureButton(R.string.message_input_movie_feature_title, R.drawable.message_input_movie) {
+                        callback.onClickMovieFeature()
+                    }
+                }
+                FeatureType.PHONE -> {
+                    createFeatureButton(R.string.message_input_phone_feature_title, R.drawable.message_input_phone) {
+                        callback.onClickPhoneFeature()
+                    }
+                }
+                FeatureType.LOCATION -> {
+                    createFeatureButton(R.string.message_input_location_feature_title, R.drawable.message_input_location) {
+                        callback.onClickLocationFeature()
+                    }
+                }
+                else -> {
+                    return
+                }
+            }
+
+            val row = Math.floor(i.toDouble() / columnCount).toInt()
+            val column = i % columnCount
+
+            val layoutParams = featureButton.layoutParams as FrameLayout.LayoutParams
+
+            layoutParams.setMargins(
+                paddingHorizontal + column * (buttonWidth + featureButtonColumnSpacing),
+                paddingVertical + row * (buttonHeight + featureButtonRowSpacing),
+                0,0
+            )
+
+        }
+
+        isFeatureListCreated = true
+
+    }
+
+    private fun createFeatureButton(title: Int, image: Int, onClick: () -> Unit): FeatureButton {
+
+        val featureButton = FeatureButton(context)
+
+        featureButton.icon = image
+        featureButton.title = resources.getString(title)
+        featureButton.onClick = onClick
+
+        morePanel.addView(featureButton)
+
+        return featureButton
+
     }
 
     private fun showContentPanel() {

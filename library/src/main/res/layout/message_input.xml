@@ -113,33 +113,13 @@
         android:visibility="gone"
         android:background="@color/message_input_content_panel_bg_color">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/morePanel"
             android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/message_input_feature_panel_padding_horizontal"
-            android:paddingRight="@dimen/message_input_feature_panel_padding_horizontal"
-            android:paddingTop="@dimen/message_input_feature_panel_padding_vertical"
-            android:paddingBottom="@dimen/message_input_feature_panel_padding_vertical">
+            android:layout_height="match_parent">
 
-            <com.github.herokotlin.messageinput.view.FeatureButton
-                android:id="@+id/photoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:feature_button_icon="@drawable/message_input_photo"
-                app:feature_button_title="@string/message_input_photo_feature_title"/>
-
-            <com.github.herokotlin.messageinput.view.FeatureButton
-                android:id="@+id/cameraButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/message_input_feature_button_spacing"
-                app:feature_button_icon="@drawable/message_input_camera"
-                app:feature_button_title="@string/message_input_camera_feature_title"/>
-
-        </LinearLayout>
+        </FrameLayout>
 
         <com.github.herokotlin.voiceinput.VoiceInput
             android:id="@+id/voicePanel"

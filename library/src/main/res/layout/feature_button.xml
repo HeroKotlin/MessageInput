@@ -12,7 +12,8 @@
         android:layout_height="@dimen/message_input_feature_button_height"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:background="@drawable/message_input_feature_button"/>
+        android:background="@drawable/message_input_feature_button"
+        tools:src="@drawable/message_input_camera"/>
 
     <TextView
         android:id="@+id/titleView"

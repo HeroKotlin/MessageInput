@@ -49,7 +49,7 @@ class FeatureButton: LinearLayout {
 
         icon = typedArray.getResourceId(R.styleable.FeatureButton_feature_button_icon, 0)
 
-        title = typedArray.getString(R.styleable.FeatureButton_feature_button_title)
+        title = typedArray.getString(R.styleable.FeatureButton_feature_button_title) ?: ""
 
         // 获取完 TypedArray 的值后，
         // 一般要调用 recycle 方法来避免重新创建的时候出错

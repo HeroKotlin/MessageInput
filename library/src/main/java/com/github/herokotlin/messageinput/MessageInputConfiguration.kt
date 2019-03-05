@@ -2,6 +2,7 @@ package com.github.herokotlin.messageinput
 
 import android.content.Context
 import android.widget.ImageView
+import com.github.herokotlin.messageinput.enum.FeatureType
 
 abstract class MessageInputConfiguration(val context: Context) {
 
@@ -19,6 +20,16 @@ abstract class MessageInputConfiguration(val context: Context) {
      * 采样率
      */
     var audioSampleRate = 44100
+
+    var featureList = listOf(
+        FeatureType.PHOTO,
+        FeatureType.CAMERA,
+        FeatureType.FILE,
+        FeatureType.USER,
+        FeatureType.MOVIE,
+        FeatureType.PHONE,
+        FeatureType.LOCATION
+    )
 
     /**
      * 加载图片

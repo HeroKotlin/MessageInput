@@ -1,6 +1,11 @@
 <resources>
     <string name="message_input_photo_feature_title">图片</string>
     <string name="message_input_camera_feature_title">拍摄</string>
+    <string name="message_input_file_feature_title">文件</string>
+    <string name="message_input_user_feature_title">名片</string>
+    <string name="message_input_movie_feature_title">视频通话</string>
+    <string name="message_input_phone_feature_title">语音通话</string>
+    <string name="message_input_location_feature_title">位置</string>
     <string name="message_input_camera_tip">轻触拍照，长按摄像</string>
     <string name="message_input_send_button_title">发送</string>
 </resources>
