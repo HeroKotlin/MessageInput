@@ -6,6 +6,16 @@ import com.github.herokotlin.messageinput.enum.FeatureType
 
 abstract class MessageInputConfiguration(val context: Context) {
 
+    var featureList = listOf(
+        FeatureType.PHOTO,
+        FeatureType.CAMERA,
+        FeatureType.FILE,
+        FeatureType.USER,
+        FeatureType.MOVIE,
+        FeatureType.PHONE,
+        FeatureType.LOCATION
+    )
+
     /**
      * 表情和文本的高度比例
      */
@@ -20,16 +30,6 @@ abstract class MessageInputConfiguration(val context: Context) {
      * 采样率
      */
     var audioSampleRate = 44100
-
-    var featureList = listOf(
-        FeatureType.PHOTO,
-        FeatureType.CAMERA,
-        FeatureType.FILE,
-        FeatureType.USER,
-        FeatureType.MOVIE,
-        FeatureType.PHONE,
-        FeatureType.LOCATION
-    )
 
     /**
      * 加载图片
