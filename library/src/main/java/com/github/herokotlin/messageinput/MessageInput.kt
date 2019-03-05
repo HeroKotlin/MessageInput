@@ -505,12 +505,12 @@ class MessageInput : LinearLayout {
 
             val featureButton: FeatureButton = when (featureList[i]) {
                 FeatureType.PHOTO -> {
-                    createFeatureButton(R.string.message_input_photo_feature_title, R.drawable.message_input_photo) {
+                    createFeatureButton(R.string.message_input_photo_feature_title, R.drawable.message_input_photo_feature_icon) {
                         callback.onClickPhotoFeature()
                     }
                 }
                 FeatureType.CAMERA -> {
-                    createFeatureButton(R.string.message_input_camera_feature_title, R.drawable.message_input_camera) {
+                    createFeatureButton(R.string.message_input_camera_feature_title, R.drawable.message_input_camera_feature_icon) {
                         val hasPermissions = configuration.requestPermissions(
                             listOf(
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -525,27 +525,27 @@ class MessageInput : LinearLayout {
                     }
                 }
                 FeatureType.FILE -> {
-                    createFeatureButton(R.string.message_input_file_feature_title, R.drawable.message_input_file) {
+                    createFeatureButton(R.string.message_input_file_feature_title, R.drawable.message_input_file_feature_icon) {
                         callback.onClickFileFeature()
                     }
                 }
                 FeatureType.USER -> {
-                    createFeatureButton(R.string.message_input_user_feature_title, R.drawable.message_input_user) {
+                    createFeatureButton(R.string.message_input_user_feature_title, R.drawable.message_input_user_feature_icon) {
                         callback.onClickUserFeature()
                     }
                 }
                 FeatureType.MOVIE -> {
-                    createFeatureButton(R.string.message_input_movie_feature_title, R.drawable.message_input_movie) {
+                    createFeatureButton(R.string.message_input_movie_feature_title, R.drawable.message_input_movie_feature_icon) {
                         callback.onClickMovieFeature()
                     }
                 }
                 FeatureType.PHONE -> {
-                    createFeatureButton(R.string.message_input_phone_feature_title, R.drawable.message_input_phone) {
+                    createFeatureButton(R.string.message_input_phone_feature_title, R.drawable.message_input_phone_feature_icon) {
                         callback.onClickPhoneFeature()
                     }
                 }
                 FeatureType.LOCATION -> {
-                    createFeatureButton(R.string.message_input_location_feature_title, R.drawable.message_input_location) {
+                    createFeatureButton(R.string.message_input_location_feature_title, R.drawable.message_input_location_feature_icon) {
                         callback.onClickLocationFeature()
                     }
                 }
