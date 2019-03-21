@@ -15,11 +15,11 @@ interface MessageInputCallback {
 
     }
 
-    fun onRecordAudioPermissionsNotGranted() {
+    fun onRecordAudioExternalStorageNotWritable() {
 
     }
 
-    fun onRecordAudioExternalStorageNotWritable() {
+    fun onRecordAudioPermissionsNotGranted() {
 
     }
 
@@ -28,6 +28,16 @@ interface MessageInputCallback {
     }
 
     fun onRecordAudioPermissionsDenied() {
+
+    }
+
+
+
+    fun onRecordVideoExternalStorageNotWritable() {
+
+    }
+
+    fun onRecordVideoPermissionsNotGranted() {
 
     }
 

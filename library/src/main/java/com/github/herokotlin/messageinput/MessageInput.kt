@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.util.AttributeSet
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -35,9 +34,7 @@ class MessageInput : LinearLayout {
 
     companion object {
 
-        const val CAMERA_PERMISSION_REQUEST_CODE = 1321
-
-        const val CAMERA_ACTIVITY_REQUEST_CODE = 1322
+        const val CAMERA_ACTIVITY_REQUEST_CODE = 13221231
 
         fun setSoftInputMode(activity: Activity, resize: Boolean) {
 
@@ -133,7 +130,7 @@ class MessageInput : LinearLayout {
                 }
             }
 
-            setSoftInputMode(context as Activity, resize)
+            setSoftInputMode(activity ?: (context as Activity), resize)
 
             field = value
 
@@ -347,6 +344,12 @@ class MessageInput : LinearLayout {
             }
         )
 
+        videoPermission.onExternalStorageNotWritable = {
+            callback.onRecordVideoExternalStorageNotWritable()
+        }
+        videoPermission.onPermissionsNotGranted = {
+            callback.onRecordVideoPermissionsNotGranted()
+        }
         videoPermission.onPermissionsGranted = {
             callback.onRecordVideoPermissionsGranted()
         }
@@ -459,9 +462,16 @@ class MessageInput : LinearLayout {
 
     private fun openCameraActivity() {
 
-        val intent = Intent(context, CameraActivity::class.java)
+        if (!videoPermission.checkExternalStorageWritable()) {
+            return
+        }
 
-        (context as Activity).startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
+        val context = activity ?: (context as Activity)
+
+        videoPermission.requestPermissions(context) {
+            val intent = Intent(context, CameraActivity::class.java)
+            context.startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
+        }
 
     }
 
@@ -532,10 +542,7 @@ class MessageInput : LinearLayout {
                 }
                 FeatureType.CAMERA -> {
                     createFeatureButton(R.string.message_input_camera_feature_title, R.drawable.message_input_camera_feature_icon) {
-                        val context = activity ?: (context as Activity)
-                        videoPermission.requestPermissions(context) {
-                            openCameraActivity()
-                        }
+                        openCameraActivity()
                     }
                 }
                 FeatureType.FILE -> {
