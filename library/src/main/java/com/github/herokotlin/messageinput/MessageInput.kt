@@ -26,6 +26,7 @@ import com.github.herokotlin.messageinput.enum.FeatureType
 import com.github.herokotlin.messageinput.enum.ViewMode
 import com.github.herokotlin.messageinput.model.ImageFile
 import com.github.herokotlin.messageinput.view.FeatureButton
+import com.github.herokotlin.permission.Permission
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.github.herokotlin.voiceinput.VoiceInputConfiguration
 import kotlinx.android.synthetic.main.message_input.view.*
@@ -50,6 +51,21 @@ class MessageInput : LinearLayout {
     lateinit var configuration: MessageInputConfiguration
 
     lateinit var callback: MessageInputCallback
+
+    // 用于请求权限
+    var activity: Activity? = null
+
+        set(value) {
+
+            if (field == value) {
+                return
+            }
+
+            field = value
+
+            voicePanel.activity = value
+
+        }
 
     var viewMode = ViewMode.KEYBOARD
 
@@ -135,12 +151,12 @@ class MessageInput : LinearLayout {
                 if (field.isBlank()) {
                     sendButton.visibility = View.VISIBLE
                     moreButton.visibility = View.GONE
-                    emotionPanel.isSendButtonEnabled = true
+                    emotionPanel.isSubmitButtonEnabled = true
                 }
                 else {
                     sendButton.visibility = View.GONE
                     moreButton.visibility = View.VISIBLE
-                    emotionPanel.isSendButtonEnabled = false
+                    emotionPanel.isSubmitButtonEnabled = false
                 }
             }
 
@@ -151,6 +167,12 @@ class MessageInput : LinearLayout {
         }
 
     private var isFeatureListCreated = false
+
+    private val videoPermission = Permission(89190906, listOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.CAMERA
+    ))
 
     private val featurePanelPaddingVertical: Int by lazy {
         resources.getDimensionPixelSize(R.dimen.message_input_feature_panel_padding_vertical)
@@ -194,7 +216,7 @@ class MessageInput : LinearLayout {
             plainText = textarea.text.toString()
         }
 
-        emotionPanel.configuration = object: EmotionInputConfiguration(emotionPanel.context) {
+        emotionPanel.configuration = object: EmotionInputConfiguration() {
             override fun loadImage(imageView: ImageView, url: String) {
                 configuration.loadImage(imageView, url)
             }
@@ -278,13 +300,7 @@ class MessageInput : LinearLayout {
             sendText()
         }
 
-        val voiceInputConfiguration = object: VoiceInputConfiguration(context) {
-
-            override fun requestPermissions(permissions: List<String>, requestCode: Int): Boolean {
-                return configuration.requestPermissions(permissions, requestCode)
-            }
-
-        }
+        val voiceInputConfiguration = object: VoiceInputConfiguration() { }
 
         voiceInputConfiguration.audioBitRate = configuration.audioBitRate
         voiceInputConfiguration.audioSampleRate = configuration.audioSampleRate
@@ -305,16 +321,8 @@ class MessageInput : LinearLayout {
                     callback.onUseAudio()
                 }
 
-                override fun onRecordWithoutPermissions() {
-                    callback.onRecordAudioWithoutPermissions()
-                }
-
                 override fun onRecordDurationLessThanMinDuration() {
                     callback.onRecordAudioDurationLessThanMinDuration()
-                }
-
-                override fun onRecordWithoutExternalStorage() {
-                    callback.onRecordAudioWithoutExternalStorage()
                 }
 
                 override fun onPermissionsGranted() {
@@ -325,8 +333,29 @@ class MessageInput : LinearLayout {
                     callback.onRecordAudioPermissionsDenied()
                 }
 
+                override fun onExternalStorageNotWritable() {
+                    callback.onRecordAudioExternalStorageNotWritable()
+                }
+
+                override fun onPermissionsNotGranted() {
+                    callback.onRecordAudioPermissionsNotGranted()
+                }
+
+                override fun onRequestPermissions(activity: Activity, permissions: Array<out String>, requestCode: Int) {
+                    callback.onRequestPermissions(activity, permissions, requestCode)
+                }
             }
         )
+
+        videoPermission.onPermissionsGranted = {
+            callback.onRecordVideoPermissionsGranted()
+        }
+        videoPermission.onPermissionsDenied = {
+            callback.onRecordVideoPermissionsDenied()
+        }
+        videoPermission.onRequestPermissions = { activity, permissions, requestCode ->
+            callback.onRequestPermissions(activity, permissions, requestCode)
+        }
 
         textarea.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -462,20 +491,12 @@ class MessageInput : LinearLayout {
         }
     }
 
-    fun requestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
-        voicePanel.requestPermissionsResult(requestCode, permissions, grantResults)
+        voicePanel.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
-            for (i in 0 until permissions.size) {
-                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    callback.onRecordVideoPermissionsDenied()
-                    return
-                }
-            }
-            callback.onRecordVideoPermissionsGranted()
-            openCameraActivity()
-        }
+        videoPermission.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -511,15 +532,8 @@ class MessageInput : LinearLayout {
                 }
                 FeatureType.CAMERA -> {
                     createFeatureButton(R.string.message_input_camera_feature_title, R.drawable.message_input_camera_feature_icon) {
-                        val hasPermissions = configuration.requestPermissions(
-                            listOf(
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.RECORD_AUDIO,
-                                Manifest.permission.CAMERA
-                            ),
-                            CAMERA_PERMISSION_REQUEST_CODE
-                        )
-                        if (hasPermissions) {
+                        val context = activity ?: (context as Activity)
+                        videoPermission.requestPermissions(context) {
                             openCameraActivity()
                         }
                     }
@@ -548,9 +562,6 @@ class MessageInput : LinearLayout {
                     createFeatureButton(R.string.message_input_location_feature_title, R.drawable.message_input_location_feature_icon) {
                         callback.onClickLocationFeature()
                     }
-                }
-                else -> {
-                    return
                 }
             }
 

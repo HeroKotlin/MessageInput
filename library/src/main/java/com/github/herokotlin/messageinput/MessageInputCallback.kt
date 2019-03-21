@@ -1,19 +1,25 @@
 package com.github.herokotlin.messageinput
 
+import android.app.Activity
+import android.support.v4.app.ActivityCompat
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.messageinput.model.ImageFile
 
 interface MessageInputCallback {
 
-    fun onRecordAudioWithoutPermissions() {
-
+    fun onRequestPermissions(activity: Activity, permissions: Array<out String>, requestCode: Int) {
+        ActivityCompat.requestPermissions(activity, permissions, requestCode)
     }
 
     fun onRecordAudioDurationLessThanMinDuration() {
 
     }
 
-    fun onRecordAudioWithoutExternalStorage() {
+    fun onRecordAudioPermissionsNotGranted() {
+
+    }
+
+    fun onRecordAudioExternalStorageNotWritable() {
 
     }
 
