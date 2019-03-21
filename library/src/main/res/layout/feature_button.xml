@@ -13,7 +13,7 @@
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:background="@drawable/message_input_feature_button"
-        tools:src="@drawable/message_input_camera"/>
+        tools:src="@drawable/message_input_camera_feature_icon"/>
 
     <TextView
         android:id="@+id/titleView"

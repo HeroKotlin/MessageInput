@@ -96,6 +96,7 @@
                 android:text="@string/message_input_send_button_title"
                 android:textSize="@dimen/message_input_send_button_text_size"
                 android:textColor="@color/message_input_send_button_text_color"
+                android:textAllCaps="false"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:background="@drawable/message_input_send_button"
