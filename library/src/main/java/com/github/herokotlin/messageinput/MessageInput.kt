@@ -34,7 +34,8 @@ class MessageInput : LinearLayout {
 
     companion object {
 
-        const val CAMERA_ACTIVITY_REQUEST_CODE = 13221231
+        // 必须小于 2^16，否则 startActivityForResult 会报错
+        const val CAMERA_ACTIVITY_REQUEST_CODE = 59143
 
         fun setSoftInputMode(activity: Activity, resize: Boolean) {
 
