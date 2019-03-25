@@ -234,7 +234,7 @@ class MessageInput : LinearLayout {
                 textarea.deleteBackward()
             }
 
-            override fun onSendClick() {
+            override fun onSubmitClick() {
                 sendText()
             }
         }
