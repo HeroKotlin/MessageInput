@@ -166,7 +166,7 @@ class MessageInput : LinearLayout {
 
     private var isFeatureListCreated = false
 
-    private val videoPermission = Permission(190906, listOf(
+    private val videoPermission = Permission(19906, listOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.RECORD_AUDIO,
         Manifest.permission.CAMERA
