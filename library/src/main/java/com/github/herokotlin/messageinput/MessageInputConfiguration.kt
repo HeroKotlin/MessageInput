@@ -13,7 +13,8 @@ abstract class MessageInputConfiguration(val context: Context) {
         FeatureType.USER,
         FeatureType.MOVIE,
         FeatureType.PHONE,
-        FeatureType.LOCATION
+        FeatureType.LOCATION,
+        FeatureType.FAVOR
     )
 
     /**

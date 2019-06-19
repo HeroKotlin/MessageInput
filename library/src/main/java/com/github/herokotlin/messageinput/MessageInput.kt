@@ -571,6 +571,11 @@ class MessageInput : LinearLayout {
                         callback.onClickLocationFeature()
                     }
                 }
+                FeatureType.FAVOR -> {
+                    createFeatureButton(R.string.message_input_favor_feature_title, R.drawable.message_input_favor_feature_icon) {
+                        callback.onClickFavorFeature()
+                    }
+                }
             }
 
             val row = Math.floor(i.toDouble() / columnCount).toInt()

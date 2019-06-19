@@ -101,6 +101,10 @@ interface MessageInputCallback {
 
     }
 
+    fun onClickFavorFeature() {
+
+    }
+
     fun onLift() {
 
     }

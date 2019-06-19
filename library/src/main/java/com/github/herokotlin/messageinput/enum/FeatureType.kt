@@ -14,6 +14,8 @@ enum class FeatureType {
 
     PHONE,
 
-    LOCATION
+    LOCATION,
+
+    FAVOR,
 
 }
