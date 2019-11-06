@@ -1,7 +1,7 @@
 package com.github.herokotlin.messageinput
 
 import android.app.Activity
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import com.github.herokotlin.emotioninput.model.Emotion
 import com.github.herokotlin.messageinput.model.ImageFile
 

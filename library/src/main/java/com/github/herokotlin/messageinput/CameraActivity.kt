@@ -5,7 +5,7 @@ import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.cjt2325.cameralibrary.JCameraView

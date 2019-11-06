@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.view.WindowManager
 import android.graphics.BitmapFactory
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.github.herokotlin.circleview.CircleView
