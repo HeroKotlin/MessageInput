@@ -3,7 +3,6 @@ package com.github.herokotlin.messageinput
 import android.app.Activity
 import androidx.core.app.ActivityCompat
 import com.github.herokotlin.emotioninput.model.Emotion
-import com.github.herokotlin.messageinput.model.ImageFile
 
 interface MessageInputCallback {
 
@@ -36,10 +35,6 @@ interface MessageInputCallback {
     }
 
     fun onSendAudio(audioPath: String, audioDuration: Int) {
-
-    }
-
-    fun onSendPhoto(photo: ImageFile) {
 
     }
 

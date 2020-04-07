@@ -7,7 +7,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import android.view.WindowManager
-import android.graphics.BitmapFactory
 import androidx.core.content.ContextCompat
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -21,7 +20,6 @@ import com.github.herokotlin.emotioninput.model.EmotionSet
 import com.github.herokotlin.messageinput.enum.AdjustMode
 import com.github.herokotlin.messageinput.enum.FeatureType
 import com.github.herokotlin.messageinput.enum.ViewMode
-import com.github.herokotlin.messageinput.model.ImageFile
 import com.github.herokotlin.messageinput.view.FeatureButton
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.github.herokotlin.voiceinput.VoiceInputConfiguration
@@ -432,13 +430,6 @@ class MessageInput : LinearLayout {
         }
     }
 
-    private fun readImage(path: String): ImageFile {
-        val options = BitmapFactory.Options()
-        options.inJustDecodeBounds = true
-        BitmapFactory.decodeFile(path, options)
-        return ImageFile(path, options.outWidth, options.outHeight)
-    }
-
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
         voicePanel.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -459,12 +450,12 @@ class MessageInput : LinearLayout {
         // 屏幕宽度不可控，因此改成计算获得
         val columnCount = 4
 
-        val columnSpaing = (columnCount - 1) * featureButtonColumnSpacing
+        val columnSpacing = (columnCount - 1) * featureButtonColumnSpacing
 
         val buttonWidth = featureButtonWidth
         val buttonHeight = featureButtonHeight
 
-        val paddingHorizontal = (width - columnCount * buttonWidth - columnSpaing) / 2
+        val paddingHorizontal = (width - columnCount * buttonWidth - columnSpacing) / 2
         val paddingVertical = featurePanelPaddingVertical
 
         val featureList = configuration.featureList
