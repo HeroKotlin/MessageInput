@@ -1,9 +1,7 @@
 package com.github.herokotlin.messageinput
 
-import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.AttributeSet
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -25,7 +23,6 @@ import com.github.herokotlin.messageinput.enum.FeatureType
 import com.github.herokotlin.messageinput.enum.ViewMode
 import com.github.herokotlin.messageinput.model.ImageFile
 import com.github.herokotlin.messageinput.view.FeatureButton
-import com.github.herokotlin.permission.Permission
 import com.github.herokotlin.voiceinput.VoiceInputCallback
 import com.github.herokotlin.voiceinput.VoiceInputConfiguration
 import kotlinx.android.synthetic.main.message_input.view.*
@@ -33,10 +30,6 @@ import kotlinx.android.synthetic.main.message_input.view.*
 class MessageInput : LinearLayout {
 
     companion object {
-
-        // 必须小于 2^16，否则 startActivityForResult 会报错
-        const val CAMERA_ACTIVITY_REQUEST_CODE = 59143
-
         fun setSoftInputMode(activity: Activity, resize: Boolean) {
 
             activity.window.setSoftInputMode(
@@ -165,12 +158,6 @@ class MessageInput : LinearLayout {
         }
 
     private var isFeatureListCreated = false
-
-    private val videoPermission = Permission(19906, listOf(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.RECORD_AUDIO,
-        Manifest.permission.CAMERA
-    ))
 
     private val featurePanelPaddingVertical: Int by lazy {
         resources.getDimensionPixelSize(R.dimen.message_input_feature_panel_padding_vertical)
@@ -345,22 +332,6 @@ class MessageInput : LinearLayout {
             }
         )
 
-        videoPermission.onExternalStorageNotWritable = {
-            callback.onRecordVideoExternalStorageNotWritable()
-        }
-        videoPermission.onPermissionsNotGranted = {
-            callback.onRecordVideoPermissionsNotGranted()
-        }
-        videoPermission.onPermissionsGranted = {
-            callback.onRecordVideoPermissionsGranted()
-        }
-        videoPermission.onPermissionsDenied = {
-            callback.onRecordVideoPermissionsDenied()
-        }
-        videoPermission.onRequestPermissions = { activity, permissions, requestCode ->
-            callback.onRequestPermissions(activity, permissions, requestCode)
-        }
-
         textarea.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
 
@@ -461,21 +432,6 @@ class MessageInput : LinearLayout {
         }
     }
 
-    private fun openCameraActivity() {
-
-        if (!videoPermission.checkExternalStorageWritable()) {
-            return
-        }
-
-        val context = activity ?: (context as Activity)
-
-        videoPermission.requestPermissions(context) {
-            val intent = Intent(context, CameraActivity::class.java)
-            context.startActivityForResult(intent, CAMERA_ACTIVITY_REQUEST_CODE)
-        }
-
-    }
-
     private fun readImage(path: String): ImageFile {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
@@ -483,30 +439,9 @@ class MessageInput : LinearLayout {
         return ImageFile(path, options.outWidth, options.outHeight)
     }
 
-    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (data != null && requestCode == CAMERA_ACTIVITY_REQUEST_CODE) {
-            when (resultCode) {
-                CameraActivity.RESULT_CODE_VIDEO -> {
-                    val path = data.getStringExtra("thumbnail")
-                    callback.onSendVideo(
-                        data.getStringExtra("video"),
-                        data.getIntExtra("duration", 0),
-                        readImage(path)
-                    )
-                }
-                CameraActivity.RESULT_CODE_PHOTO -> {
-                    val path = data.getStringExtra("photo")
-                    callback.onSendPhoto(readImage(path))
-                }
-            }
-        }
-    }
-
     fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
 
         voicePanel.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        videoPermission.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
     }
 
@@ -543,7 +478,7 @@ class MessageInput : LinearLayout {
                 }
                 FeatureType.CAMERA -> {
                     createFeatureButton(R.string.message_input_camera_feature_title, R.drawable.message_input_camera_feature_icon) {
-                        openCameraActivity()
+                        callback.onClickCameraFeature()
                     }
                 }
                 FeatureType.FILE -> {

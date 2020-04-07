@@ -31,33 +31,11 @@ interface MessageInputCallback {
 
     }
 
-
-
-    fun onRecordVideoExternalStorageNotWritable() {
-
-    }
-
-    fun onRecordVideoPermissionsNotGranted() {
-
-    }
-
-    fun onRecordVideoPermissionsGranted() {
-
-    }
-
-    fun onRecordVideoPermissionsDenied() {
-
-    }
-
     fun onUseAudio() {
 
     }
 
     fun onSendAudio(audioPath: String, audioDuration: Int) {
-
-    }
-
-    fun onSendVideo(videoPath: String, videoDuration: Int, thumbnail: ImageFile) {
 
     }
 
@@ -78,6 +56,10 @@ interface MessageInputCallback {
     }
 
     fun onClickPhotoFeature() {
+
+    }
+
+    fun onClickCameraFeature() {
 
     }
 

@@ -1,17 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.github.herokotlin.messageinput">
-
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.RECORD_VIDEO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-    <application>
-        <activity android:name=".CameraActivity"
-                  android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-                  android:screenOrientation="portrait">
-        </activity>
-    </application>
-
-</manifest>
+          package="com.github.herokotlin.messageinput"/>
