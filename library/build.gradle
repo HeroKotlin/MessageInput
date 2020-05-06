@@ -37,7 +37,7 @@ dependencies {
 
     implementation 'com.github.herokotlin:CircleView:0.0.9'
     implementation 'com.github.herokotlin:VoiceInput:0.2.3'
-    implementation 'com.github.herokotlin:EmotionInput:0.1.9'
+    implementation 'com.github.herokotlin:EmotionInput:0.2.0'
     implementation 'com.github.herokotlin:Permission:0.0.5'
 
     testImplementation 'junit:junit:4.12'
